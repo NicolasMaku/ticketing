@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+
+    <!-- Configuration du DispatcherServlet -->
+    <servlet>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>mg.itu.prom16.FrontController</servlet-class>
+        <!-- Emplacement du fichier de configuration Spring -->
+        <init-param>
+            <param-name>package-controller</param-name>
+            <param-value>itu.nicolas.ticketing.controller</param-value>
+        </init-param>
+
+        <init-param>
+            <param-name>authentification-handler</param-name>
+            <param-value>itu.nicolas.ticketing.handler.CustomAuthenHandler</param-value>
+        </init-param>
+    </servlet>
+
+    <!-- Mapping des URLs pour le DispatcherServlet -->
+    <servlet-mapping>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+</web-app>
