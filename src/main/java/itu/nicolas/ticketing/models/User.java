@@ -1,12 +1,10 @@
 package itu.nicolas.ticketing.models;
 
-import util.MyFile;
 
 public class User {
     String username;
     String password;
     String role;
-    MyFile cin;
 
     public String getRole() {
         return role;
@@ -16,13 +14,6 @@ public class User {
         this.role = role;
     }
 
-    public MyFile getCin() {
-        return cin;
-    }
-
-    public void setCin(MyFile cin) {
-        this.cin = cin;
-    }
 
     public String getUsername() {
         return username;
