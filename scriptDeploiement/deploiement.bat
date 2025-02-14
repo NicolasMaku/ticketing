@@ -7,6 +7,7 @@ set temp=C:\Users\nicol\Documents\0-ITU\S4\webDynamique\deploiement\temp
 set src=C:\Users\nicol\Documents\0-ITU\S5\ticketing\src
 set web=C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\webapp
 set xml=C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\webapp\WEB-INF\web.xml
+set persis=C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\resources\META-INF\persistence.xml
 @REM set dispatcher=C:\Users\nicol\Documents\0-ITU\S4\webDynamique\spring02\WEB-INF\dispatcher-servlet.xml
 set lib=C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib
 
@@ -19,10 +20,12 @@ IF EXIST "%temp%" (
 mkdir "%temp%"
 mkdir "%temp%\WEB-INF"
 mkdir "%temp%\WEB-INF\classes"
+mkdir "%temp%\WEB-INF\classes\META-INF"
 mkdir "%temp%\WEB-INF\lib"
 
 xcopy "%web%" "%temp%\webapp" /s /e /i
 xcopy "%xml%" "%temp%\WEB-INF\" /s /e /i
+xcopy "%persis%" "%temp%\WEB-INF\classes\META-INF\" /s /e /i
 @REM xcopy "%dispatcher%" "%temp%\WEB-INF\" /s /e /i
 xcopy "%lib%\*" "%temp%\WEB-INF\lib\" /s /e /i
 

@@ -11,6 +11,7 @@ public class HomeController {
     @Url("home")
     public ModelView home() {
         ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.addObject("page", "pages/insertion.jsp");
         return mv;
     }
 }

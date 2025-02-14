@@ -1,2 +1,8 @@
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\jakarta.persistence-api-3.1.0.jar
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\org.eclipse.persistence.asm-9.5.0.jar
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\org.eclipse.persistence.core-4.0.2.jar
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\org.eclipse.persistence.jpa-4.0.2.jar
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\org.eclipse.persistence.jpa.jpql-4.0.2.jar
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\postgresql-42.6.0.jar
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\servlet-api.jar
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\wavie.jar
