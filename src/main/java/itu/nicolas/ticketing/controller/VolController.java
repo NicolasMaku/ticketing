@@ -18,15 +18,15 @@ import java.util.List;
 @Controller
 public class VolController {
     EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+    VolRepository volRepo  = new VolRepository(em);
 
     @Get
     @Url("vol")
-    public String lister() {
-        VolRepository volRepo = new VolRepository(em);
-        VilleRepository villeRepository = new VilleRepository(em);
-        List<Vol> liste = volRepo.findAll();
-        List<Ville> listeR = villeRepository.findAll();
-        return liste.get(0).getIdVilleArrivee().getNom();
+    public ModelView lister() {
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.addObject("page", "pages/liste.jsp");
+        mv.addObject("vols",volRepo.findAll());
+        return mv;
     }
 
     @Get
@@ -48,7 +48,6 @@ public class VolController {
             @Param(name = "arriveeVol") String arriveeVol
     ) {
         VilleRepository vr = new VilleRepository(em);
-        VolRepository volRepo = new VolRepository(em);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime depart = LocalDateTime.parse(departVol, formatter);
@@ -59,6 +58,17 @@ public class VolController {
 
         Vol vol = new Vol(depart,arrivee, vd, va);
         volRepo.save(vol);
+        return "redirect:/vol";
+    }
+
+    @Get
+    @Url("vol/delete")
+    public String update(
+            @Param(name = "id") int idVol
+    ) {
+        if (idVol != 0)
+            volRepo.deleteById(idVol);
+
         return "redirect:/vol";
     }
 }

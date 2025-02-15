@@ -30,4 +30,36 @@ public class VolRepository {
             throw new RuntimeException("Erreur lors de la sauvegarde du Vol", ex);
         }
     }
+
+    public void update(Vol vol) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vol);
+            tx.commit();
+        } catch (Exception ex) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erreur lors de la mise à jour du Vol", ex);
+        }
+    }
+
+    public void deleteById(Integer id) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            Vol vol = em.find(Vol.class, id);
+            if (vol != null) {
+                em.remove(vol);
+            }
+            tx.commit();
+        } catch (Exception ex) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erreur lors de la suppression du Vol", ex);
+        }
+    }
+
 }
