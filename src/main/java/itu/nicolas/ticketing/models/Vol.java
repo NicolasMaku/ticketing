@@ -34,14 +34,17 @@ public class Vol {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_avion", nullable = false)
     private Avion idAvion;
-//
-//    public List<OffreSiegeAvionVol> getOffreSiegeAvionVols() {
-//        return offreSiegeAvionVols;
-//    }
-//
-//    public void setOffreSiegeAvionVols(List<OffreSiegeAvionVol> offreSiegeAvionVols) {
-//        this.offreSiegeAvionVols = offreSiegeAvionVols;
-//    }
+
+    @OneToMany(mappedBy = "idVol", cascade = CascadeType.REMOVE)
+    private List<OffreSiegeAvionVol> offreSiegeAvionVols = new ArrayList<>();
+
+    public List<OffreSiegeAvionVol> getOffreSiegeAvionVols() {
+        return offreSiegeAvionVols;
+    }
+
+    public void setOffreSiegeAvionVols(List<OffreSiegeAvionVol> offreSiegeAvionVols) {
+        this.offreSiegeAvionVols = offreSiegeAvionVols;
+    }
 
     public Avion getIdAvion() {
         return idAvion;

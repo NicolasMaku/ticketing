@@ -69,7 +69,7 @@ CREATE TABLE offre_siege_avion_vol(
    id_vol INTEGER NOT NULL,
    PRIMARY KEY(id_offre_siege_avion_vol),
    FOREIGN KEY(id_siege_avion) REFERENCES siege_avion(id_siege_avion),
-   FOREIGN KEY(id_vol) REFERENCES vol(id_vol)
+   FOREIGN KEY(id_vol) REFERENCES vol(id_vol) on delete cascade
 );
 
 CREATE TABLE promotion(
