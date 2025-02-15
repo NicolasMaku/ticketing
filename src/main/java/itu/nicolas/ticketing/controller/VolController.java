@@ -1,17 +1,17 @@
 package itu.nicolas.ticketing.controller;
 
 
-import itu.nicolas.ticketing.models.Ville;
-import itu.nicolas.ticketing.models.Vol;
-import itu.nicolas.ticketing.repository.VilleRepository;
-import itu.nicolas.ticketing.repository.VolRepository;
+import itu.nicolas.ticketing.models.*;
+import itu.nicolas.ticketing.repository.*;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import mg.itu.prom16.retourController.ModelView;
 import mg.itu.prom16.annotations.*;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
 
@@ -33,9 +33,42 @@ public class VolController {
     @Url("vol/form")
     public ModelView formulaire() {
         VilleRepository vr = new VilleRepository(em);
+        AvionRepository ar = new AvionRepository(em);
+        SiegeAvionRepository sar = new SiegeAvionRepository(em);
+
         ModelView mv = new ModelView("/webapp/index.jsp");
         mv.addObject("page", "pages/insertion.jsp");
         mv.addObject("villes",vr.findAll());
+        mv.addObject("avions",ar.findAll());
+        return mv;
+    }
+
+    @Post
+    @Url("vol/formPrix")
+    public ModelView formulairePrix(
+            @Param(name = "idAvion") int idAvion,
+            @Param(name = "idVol") int idVol
+    ) {
+        AvionRepository ar = new AvionRepository(em);
+        GenericRepository<TypeSiege> typeSiegeRepo = new GenericRepository<TypeSiege>(em, TypeSiege.class);
+        SiegeAvionRepository sar = new SiegeAvionRepository(em);
+        VolRepository vr = new VolRepository(em);
+        OffreSiegeAvionVolRepository offresRepo = new OffreSiegeAvionVolRepository(em);
+
+        Avion avion = ar.findById(idAvion);
+        Vol vol = vr.findById(idVol);
+
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.addObject("page", "pages/vol/insertionPrixPlaces.jsp");
+        mv.addObject("avion", avion);
+        mv.addObject("siegesAvion", sar.findByAvion(avion));
+        mv.addObject("vol", vol);
+
+        if (idVol > 0) {
+            mv.addObject("offresSiege", offresRepo.findByVol(vol));
+//            mv.addObject("offresSiege", vol.getOffreSiegeAvionVols());
+        }
+
         return mv;
     }
 
@@ -45,9 +78,17 @@ public class VolController {
             @Param(name = "idVilleDepart") int idVilleDepart,
             @Param(name = "idVilleArrivee") int idVilleArrivee,
             @Param(name = "departVol") String departVol,
-            @Param(name = "arriveeVol") String arriveeVol
+            @Param(name = "arriveeVol") String arriveeVol,
+            @Param(name = "idAvion") int idAvion,
+            @Param(name = "idSiegesAvion[]") Integer[] idSiegesAvion,
+            @Param(name = "prix[]") Double[] prix,
+            @Param(name = "idVol") int idVol,
+            @Param(name = "idOffres[]") Integer[] idOffres
     ) {
         VilleRepository vr = new VilleRepository(em);
+        AvionRepository ar = new AvionRepository(em);
+        SiegeAvionRepository sar = new SiegeAvionRepository(em);
+        OffreSiegeAvionVolRepository offresRepo = new OffreSiegeAvionVolRepository(em);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime depart = LocalDateTime.parse(departVol, formatter);
@@ -56,8 +97,38 @@ public class VolController {
         Ville vd = vr.findById(idVilleDepart);
         Ville va = vr.findById(idVilleArrivee);
 
-        Vol vol = new Vol(depart,arrivee, vd, va);
-        volRepo.save(vol);
+        Avion avion = ar.findById(idAvion);
+
+        if (idVol <0) {
+            Vol vol = new Vol(depart,arrivee, vd, va, avion);
+            volRepo.save(vol);
+
+            // creation des offres de places
+            List<OffreSiegeAvionVol> offres = new ArrayList<>();
+            for (int i = 0; i < idSiegesAvion.length ; i++) {
+                SiegeAvion siege = sar.findById(idSiegesAvion[i]);
+                OffreSiegeAvionVol offre = new OffreSiegeAvionVol(prix[i], siege, vol);
+                offres.add(offre);
+            }
+
+            offresRepo.saveAll(offres);
+
+        } else {
+            Vol ancien = volRepo.findById(idVol);
+            Vol nouv = new Vol(depart,arrivee, vd, va, avion);
+            nouv.setId(ancien.getId());
+
+            for (int i = 0; i < idOffres.length ; i++) {
+                OffreSiegeAvionVol offre = offresRepo.findById(idOffres[i]);
+                SiegeAvion siege = sar.findById(idSiegesAvion[i]);
+                OffreSiegeAvionVol offreNouv = new OffreSiegeAvionVol(prix[i], siege, nouv);
+                offreNouv.setId(offre.getId());
+                offresRepo.update(offreNouv);
+            }
+
+            volRepo.update(nouv);
+        }
+
         return "redirect:/vol";
     }
 
@@ -71,4 +142,20 @@ public class VolController {
 
         return "redirect:/vol";
     }
+
+    @Get
+    @Url("vol/update")
+    public ModelView formUpdate(
+            @Param(name = "id") int idVol
+    ) {
+        VilleRepository vr = new VilleRepository(em);
+        AvionRepository ar = new AvionRepository(em);
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.addObject("page", "pages/insertion.jsp");
+        mv.addObject("avions",ar.findAll());
+        mv.addObject("villes",vr.findAll());
+        mv.addObject("vol", volRepo.findById(idVol));
+        return mv;
+    }
+
 }

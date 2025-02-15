@@ -3,7 +3,7 @@
 %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html style="width: 100%; overflow-x: hidden">
 <head>
   <title>JSP - Hello World</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -34,14 +34,14 @@
             Vol
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="#">Inserer</a></li>
-            <li><a class="dropdown-item" href="#">Gerer</a></li>
+            <li><a class="dropdown-item" href="/ticketing/vol/form">Inserer</a></li>
+            <li><a class="dropdown-item" href="/ticketing/vol">Gerer</a></li>
           </ul>
         </li>
       </ul>
     </div>
     <div>
-      <a class="nav-link" href="">A propés</a>
+      <a class="nav-link" href="">A propos</a>
     </div>
   </div>
 </nav>

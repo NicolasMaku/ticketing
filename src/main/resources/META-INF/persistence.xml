@@ -10,9 +10,11 @@
 
         <class>itu.nicolas.ticketing.models.Vol</class>
         <class>itu.nicolas.ticketing.models.Ville</class>
-        <!-- Ajoutez d'autres classes d'entités ici -->
+        <class>itu.nicolas.ticketing.models.Avion</class>
+        <class>itu.nicolas.ticketing.models.SiegeAvion</class>
+        <class>itu.nicolas.ticketing.models.TypeSiege</class>
+        <class>itu.nicolas.ticketing.models.OffreSiegeAvionVol</class>
 
-        <!-- Propriétés de la base de données PostgreSQL -->
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/ticketing"/>

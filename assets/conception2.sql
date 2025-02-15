@@ -15,9 +15,11 @@ CREATE TABLE vol(
    id_vol SERIAL,
    depart_vol TIMESTAMP,
    arrivee_vol TIMESTAMP,
+   id_avion INTEGER NOT NULL,
    id_ville_depart INTEGER NOT NULL,
    id_ville_arrivee INTEGER NOT NULL,
    PRIMARY KEY(id_vol),
+   FOREIGN KEY(id_avion) REFERENCES avion(id_avion),
    FOREIGN KEY(id_ville_depart) REFERENCES ville(id_ville),
    FOREIGN KEY(id_ville_arrivee) REFERENCES ville(id_ville)
 );

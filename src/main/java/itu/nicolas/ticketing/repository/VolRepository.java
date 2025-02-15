@@ -13,6 +13,9 @@ public class VolRepository {
         this.em = em;
     }
 
+    public Vol findById(int idVol) {
+        return em.find(Vol.class, idVol);
+    }
     public List<Vol> findAll() {
         return em.createQuery("SELECT v FROM Vol v", Vol.class).getResultList();
     }
