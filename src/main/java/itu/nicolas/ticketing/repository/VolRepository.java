@@ -4,6 +4,7 @@ import itu.nicolas.ticketing.models.Vol;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VolRepository {
@@ -63,6 +64,46 @@ public class VolRepository {
             }
             throw new RuntimeException("Erreur lors de la suppression du Vol", ex);
         }
+    }
+
+    public List<Vol> rechercheMulti(
+            Integer idVilleDepart, Integer idVilleArrivee,
+            LocalDateTime departVol, LocalDateTime arriveeVol,
+            Integer idAvion, Double prixMin, Double prixMax
+    ) {
+        String sql = "SELECT * FROM vol \n" +
+                "        WHERE id_ville_depart = coalesce(cast(?1 as integer), id_ville_depart) \n" +
+                "          AND id_ville_arrivee = coalesce(cast(?2 as integer), id_ville_arrivee) \n" +
+                "          AND depart_vol >= coalesce(cast(?3 as timestamp), depart_vol) \n" +
+                "          AND depart_vol <= coalesce(cast(?4 as timestamp), depart_vol) \n" +
+                "          AND id_avion = coalesce(cast(?5 as integer), id_avion)";
+
+        return em.createNativeQuery(sql, Vol.class)
+                .setParameter(1, idVilleDepart)
+                .setParameter(2, idVilleArrivee)
+                .setParameter(3, departVol)
+                .setParameter(4, arriveeVol)
+                .setParameter(5, idAvion)
+                .getResultList();
+
+//        String sql = "SELECT * FROM vol \n" +
+//                "        WHERE id_ville_depart = coalesce(?1, id_ville_depart) \n" +
+//                "          AND id_ville_arrivee = coalesce(?2, id_ville_arrivee) \n" +
+//                "          AND depart_vol >= coalesce(?3, depart_vol) \n" +
+//                "          AND depart_vol <= coalesce(?4, depart_vol) \n" +
+//                "          AND id_avion = coalesce(?5, id_avion) \n" +
+//                "          AND prix >= coalesce(?6, prix) " +
+//                "          AND prix <= coalesce(?7, prix)";
+//
+//        return em.createNativeQuery(sql, Vol.class)
+//                .setParameter(1, idVilleDepart)
+//                .setParameter(2, idVilleArrivee)
+//                .setParameter(3, departVol)
+//                .setParameter(4, arriveeVol)
+//                .setParameter(5, idAvion)
+//                .setParameter(6, prixMin)
+//                .setParameter(7, prixMax)
+//                .getResultList();
     }
 
 }

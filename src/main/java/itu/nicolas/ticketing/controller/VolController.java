@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Formatter;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class VolController {
@@ -130,6 +131,62 @@ public class VolController {
         }
 
         return "redirect:/vol";
+    }
+
+    @Get
+    @Url("vol/multicritere")
+    public ModelView multicritere(
+
+    ) {
+        VilleRepository vr = new VilleRepository(em);
+        AvionRepository ar = new AvionRepository(em);
+        SiegeAvionRepository sar = new SiegeAvionRepository(em);
+        VolRepository volrepo = new VolRepository(em);
+
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.addObject("page", "pages/vol/rechercheMulti.jsp");
+        mv.addObject("vols", volRepo.findAll());
+        mv.addObject("villes",vr.findAll());
+        mv.addObject("avions",ar.findAll());
+        return mv;
+    }
+
+    @Post
+    @Url("vol/traite-multi")
+    public ModelView traitementMulticritere(
+        @Param(name = "idVilleDepart") Integer idVilleDepart,
+        @Param(name = "idVilleArrivee") Integer idVilleArrivee,
+        @Param(name = "departVol") String departVol,
+        @Param(name = "arriveeVol") String arriveeVol,
+        @Param(name = "idAvion") Integer idAvion,
+        @Param(name = "prixMin") Double prixMin,
+        @Param(name = "prixMax") Double prixMax
+    ) {
+        VilleRepository vr = new VilleRepository(em);
+        AvionRepository ar = new AvionRepository(em);
+        SiegeAvionRepository sar = new SiegeAvionRepository(em);
+        VolRepository volrepo = new VolRepository(em);
+
+        if (prixMax == 0) prixMax = null;
+        if (idVilleArrivee < 0) idVilleArrivee = null;
+        if (idVilleDepart < 0) idVilleDepart = null;
+        if (idAvion < 0) idAvion = null;
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime depart = null;
+        if (!Objects.equals(departVol, "null")) depart = LocalDateTime.parse(departVol, formatter);
+        LocalDateTime arrivee = null;
+        if (!Objects.equals(arriveeVol, "null")) depart = LocalDateTime.parse(arriveeVol, formatter);
+
+        List<Vol> corresp = volrepo.rechercheMulti(idVilleDepart, idVilleArrivee, depart, arrivee, idAvion, prixMin, prixMax);
+
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.addObject("page", "pages/vol/rechercheMulti.jsp");
+        mv.addObject("vols",corresp);
+        mv.addObject("villes",vr.findAll());
+        mv.addObject("avions",ar.findAll());
+
+        return mv;
     }
 
     @Get

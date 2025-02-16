@@ -36,6 +36,7 @@
           <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
             <li><a class="dropdown-item" href="/ticketing/vol/form">Inserer</a></li>
             <li><a class="dropdown-item" href="/ticketing/vol">Gerer</a></li>
+            <li><a class="dropdown-item" href="/ticketing/vol/multicritere">Recherche multicritere</a></li>
           </ul>
         </li>
       </ul>
