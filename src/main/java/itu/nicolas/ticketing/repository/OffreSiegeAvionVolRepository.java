@@ -62,4 +62,11 @@ public class OffreSiegeAvionVolRepository {
             throw new RuntimeException("Erreur lors de la mise à jour de l'offre", ex);
         }
     }
+
+    public List<OffreSiegeAvionVol> findEtat() {
+        String sql = "";
+
+        return em.createNativeQuery(sql, OffreSiegeAvionVol.class)
+                .getResultList();
+    }
 }

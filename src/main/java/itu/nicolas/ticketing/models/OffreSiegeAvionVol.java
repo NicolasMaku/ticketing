@@ -1,5 +1,7 @@
 package itu.nicolas.ticketing.models;
 
+import itu.nicolas.ticketing.repository.EtatOffreRepository;
+import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -63,4 +65,15 @@ public class OffreSiegeAvionVol {
         this.idSiegeAvion = idSiegeAvion;
         this.idVol = idVol;
     }
+
+    public EtatOffre getEtatOffre(EntityManager em) {
+        EtatOffreRepository etatOffre = new EtatOffreRepository(em);
+        return etatOffre.findById(this.getId());
+    }
+
+    public EtatOffre getEtatOffre() {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        return getEtatOffre(em);
+    }
+
 }

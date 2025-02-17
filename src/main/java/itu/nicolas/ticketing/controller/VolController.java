@@ -151,6 +151,26 @@ public class VolController {
         return mv;
     }
 
+    @Get
+    @Url("vol/multicritere-front")
+    public ModelView multicritereFront(
+        @Param(name = "erreur") String erreur
+    ) {
+        VilleRepository vr = new VilleRepository(em);
+        AvionRepository ar = new AvionRepository(em);
+        SiegeAvionRepository sar = new SiegeAvionRepository(em);
+        VolRepository volrepo = new VolRepository(em);
+
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.addObject("page", "pages/vol/rechercheMultiFront.jsp");
+        mv.addObject("vols", volRepo.findAll());
+        mv.addObject("villes",vr.findAll());
+        mv.addObject("avions",ar.findAll());
+
+        if (erreur != null) mv.addObject("erreur", erreur);
+        return mv;
+    }
+
     @Post
     @Url("vol/traite-multi")
     public ModelView traitementMulticritere(

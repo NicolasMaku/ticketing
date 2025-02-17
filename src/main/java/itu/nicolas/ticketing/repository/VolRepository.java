@@ -86,24 +86,6 @@ public class VolRepository {
                 .setParameter(5, idAvion)
                 .getResultList();
 
-//        String sql = "SELECT * FROM vol \n" +
-//                "        WHERE id_ville_depart = coalesce(?1, id_ville_depart) \n" +
-//                "          AND id_ville_arrivee = coalesce(?2, id_ville_arrivee) \n" +
-//                "          AND depart_vol >= coalesce(?3, depart_vol) \n" +
-//                "          AND depart_vol <= coalesce(?4, depart_vol) \n" +
-//                "          AND id_avion = coalesce(?5, id_avion) \n" +
-//                "          AND prix >= coalesce(?6, prix) " +
-//                "          AND prix <= coalesce(?7, prix)";
-//
-//        return em.createNativeQuery(sql, Vol.class)
-//                .setParameter(1, idVilleDepart)
-//                .setParameter(2, idVilleArrivee)
-//                .setParameter(3, departVol)
-//                .setParameter(4, arriveeVol)
-//                .setParameter(5, idAvion)
-//                .setParameter(6, prixMin)
-//                .setParameter(7, prixMax)
-//                .getResultList();
     }
 
 }
