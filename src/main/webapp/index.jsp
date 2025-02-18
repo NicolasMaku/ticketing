@@ -21,7 +21,7 @@
     <div class="collapse d-flex" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="/ticketing/reservation/liste?idUser=1">Mes reservations</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/ticketing/vol/multicritere-front">Vol</a>

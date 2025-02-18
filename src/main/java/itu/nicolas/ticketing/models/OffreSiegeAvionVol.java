@@ -68,12 +68,28 @@ public class OffreSiegeAvionVol {
 
     public EtatOffre getEtatOffre(EntityManager em) {
         EtatOffreRepository etatOffre = new EtatOffreRepository(em);
-        return etatOffre.findById(this.getId());
+        return etatOffre.findByIdOffre(this.getId());
     }
 
     public EtatOffre getEtatOffre() {
         EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
         return getEtatOffre(em);
+    }
+
+    public void findById(int id, EntityManager em) {
+        try {
+            OffreSiegeAvionVol offre = em.find(OffreSiegeAvionVol.class, id);
+            this.adapt(offre);
+        } catch (Exception e) {
+            return ;
+        }
+    }
+
+    public void adapt(OffreSiegeAvionVol o) {
+        this.id = o.getId();
+        this.idVol = o.getIdVol();
+        this.idSiegeAvion = o.getIdSiegeAvion();
+        this.prix = o.getPrix();
     }
 
 }

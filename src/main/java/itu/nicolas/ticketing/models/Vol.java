@@ -23,11 +23,11 @@ public class Vol {
     @Column(name = "arrivee_vol")
     private LocalDateTime arriveeVol;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ville_depart", nullable = false)
     private Ville idVilleDepart;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ville_arrivee", nullable = false)
     private Ville idVilleArrivee;
 

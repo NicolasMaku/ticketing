@@ -1,3 +1,4 @@
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\hibernate-annotations-3.5.6-Final.jar
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\jakarta.persistence-api-3.1.0.jar
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\org.eclipse.persistence.asm-9.5.0.jar
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\lib\org.eclipse.persistence.core-4.0.2.jar

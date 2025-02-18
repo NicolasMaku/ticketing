@@ -1,9 +1,12 @@
 package itu.nicolas.ticketing.models;
 
+import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "reservation")
@@ -26,6 +29,9 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_offre_siege_avion_vol", nullable = false)
     private OffreSiegeAvionVol idOffreSiegeAvionVol;
+
+    @Column(name = "prix")
+    private Double prix;
 
     public Integer getId() {
         return id;
@@ -70,10 +76,59 @@ public class Reservation {
     public Reservation() {
     }
 
-    public Reservation(LocalDateTime dateReservation, UserTicketing idUserTicketing, OffreSiegeAvionVol idOffreSiegeAvionVol) {
+    public Reservation(LocalDateTime dateReservation, UserTicketing idUserTicketing, OffreSiegeAvionVol idOffreSiegeAvionVol, Double prix) {
         this.dateReservation = dateReservation;
         this.idUserTicketing = idUserTicketing;
         this.idOffreSiegeAvionVol = idOffreSiegeAvionVol;
+        this.prix = prix;
     }
 
+    public List<Reservation> findAll(EntityManager em) {
+        return em.createQuery("SELECT v FROM Reservation v", Reservation.class).getResultList();
+    }
+
+    public void findById(int id, EntityManager em) {
+        try {
+            Reservation res = em.find(Reservation.class, id);
+            this.adapt(res);
+        } catch (Exception e) {
+            return ;
+        }
+    }
+
+    public void adapt(Reservation res) {
+        this.id = res.getId();
+        this.idUserTicketing = res.getIdUserTicketing();
+        this.idOffreSiegeAvionVol = res.getIdOffreSiegeAvionVol();
+        this.dateReservation = res.getDateReservation();
+        this.dateAnnulation = res.getDateAnnulation();
+    }
+
+    public void save(EntityManager em) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.persist(this);
+            tx.commit();
+        } catch (Exception ex) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erreur lors de la sauvegarde du reservation", ex);
+        }
+    }
+
+    public void update(EntityManager em) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(this);
+            tx.commit();
+        } catch (Exception ex) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erreur lors de la mise à jour du reservation", ex);
+        }
+    }
 }

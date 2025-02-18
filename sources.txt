@@ -10,6 +10,7 @@ C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\ConfigurationLimite.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\EtatOffre.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\OffreSiegeAvionVol.java
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\Promotion.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\Reservation.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\SiegeAvion.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\TypeSiege.java
@@ -22,7 +23,6 @@ C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\EtatOffreRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\GenericRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\OffreSiegeAvionVolRepository.java
-C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\ReservationRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\SiegeAvionRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\UserTicketingRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\VilleRepository.java

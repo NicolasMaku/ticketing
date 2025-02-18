@@ -18,6 +18,7 @@
         <class>itu.nicolas.ticketing.models.Reservation</class>
         <class>itu.nicolas.ticketing.models.UserTicketing</class>
         <class>itu.nicolas.ticketing.models.EtatOffre</class>
+        <class>itu.nicolas.ticketing.models.Promotion</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>

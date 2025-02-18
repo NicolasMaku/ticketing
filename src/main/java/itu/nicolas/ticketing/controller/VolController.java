@@ -83,6 +83,8 @@ public class VolController {
             @Param(name = "idAvion") int idAvion,
             @Param(name = "idSiegesAvion[]") Integer[] idSiegesAvion,
             @Param(name = "prix[]") Double[] prix,
+            @Param(name = "quantite[]") Integer[] nbrePlaces,
+            @Param(name = "pourc[]") Double[] poucentages ,
             @Param(name = "idVol") int idVol,
             @Param(name = "idOffres[]") Integer[] idOffres
     ) {
@@ -104,15 +106,22 @@ public class VolController {
             Vol vol = new Vol(depart,arrivee, vd, va, avion);
             volRepo.save(vol);
 
-            // creation des offres de places
+            // creation des offres de places et promotion
             List<OffreSiegeAvionVol> offres = new ArrayList<>();
+            List<Promotion> promotions = new ArrayList<>();
+
             for (int i = 0; i < idSiegesAvion.length ; i++) {
                 SiegeAvion siege = sar.findById(idSiegesAvion[i]);
                 OffreSiegeAvionVol offre = new OffreSiegeAvionVol(prix[i], siege, vol);
                 offres.add(offre);
-            }
 
+                if (nbrePlaces[i] > 0) {
+                    Promotion prom = new Promotion(poucentages[i], nbrePlaces[i], offre);
+                    promotions.add(prom);
+                }
+            }
             offresRepo.saveAll(offres);
+            promotions.get(0).saveAll(promotions, em);
 
         } else {
             Vol ancien = volRepo.findById(idVol);
@@ -120,7 +129,8 @@ public class VolController {
             nouv.setId(ancien.getId());
 
             for (int i = 0; i < idOffres.length ; i++) {
-                OffreSiegeAvionVol offre = offresRepo.findById(idOffres[i]);
+                OffreSiegeAvionVol offre = new OffreSiegeAvionVol();
+                offre.findById(idOffres[i], em);
                 SiegeAvion siege = sar.findById(idSiegesAvion[i]);
                 OffreSiegeAvionVol offreNouv = new OffreSiegeAvionVol(prix[i], siege, nouv);
                 offreNouv.setId(offre.getId());

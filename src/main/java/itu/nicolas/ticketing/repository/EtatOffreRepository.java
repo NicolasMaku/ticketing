@@ -16,9 +16,24 @@ public class EtatOffreRepository {
     public List<EtatOffre> findAll() {
         return em.createQuery("SELECT v FROM EtatOffre v", EtatOffre.class).getResultList();
     }
-    public EtatOffre findById(int id) {
+//    public EtatOffre findById(int id) {
+//        try {
+//            return em.find(EtatOffre.class, id);
+//        } catch (Exception e) {
+//            return null;
+//        }
+//    }
+
+    public EtatOffre findByIdOffre(int idOffre) {
         try {
-            return em.find(EtatOffre.class, id);
+            List<EtatOffre> etatOffres = em.createQuery("SELECT v FROM EtatOffre v where v.idOffreSiegeAvionVol.id= ?1", EtatOffre.class)
+                    .setParameter(1, idOffre)
+                    .getResultList();
+
+            if (!etatOffres.isEmpty())
+                return etatOffres.get(0);
+
+            return null;
         } catch (Exception e) {
             return null;
         }

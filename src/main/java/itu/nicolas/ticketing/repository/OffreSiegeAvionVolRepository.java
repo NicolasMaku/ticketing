@@ -19,13 +19,6 @@ public class OffreSiegeAvionVolRepository {
     public List<OffreSiegeAvionVol> findAll() {
         return em.createQuery("SELECT v FROM OffreSiegeAvionVol v", OffreSiegeAvionVol.class).getResultList();
     }
-    public OffreSiegeAvionVol findById(int id) {
-        try {
-            return em.find(OffreSiegeAvionVol.class, id);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     public List<OffreSiegeAvionVol> findByVol(Vol vol) {
         return em.createQuery("SELECT s FROM OffreSiegeAvionVol s WHERE s.idVol = :vol", OffreSiegeAvionVol.class)

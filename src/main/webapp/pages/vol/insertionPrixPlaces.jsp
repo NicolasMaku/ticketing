@@ -19,9 +19,9 @@
     <input type="hidden" name="departVol" value="<%=request.getParameter("departVol")%>">
     <input type="hidden" name="arriveeVol" value="<%=request.getParameter("arriveeVol")%>">
 
-    <h3>Information sur les prix <%=request.getParameter("idVilleDepart")%></h3>
+    <h3>Information sur les prix et promotion</h3>
     <div class="mb-3 row">
-        <label for="staticEmail" class="col-sm-2 col-form-label">Avion</label>
+        <label for="staticEmail" class="col-sm-2 col-form-label">Avion :</label>
         <div class="col-sm-10">
             <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%= avion.getLibelle() %>">
         </div>
@@ -46,15 +46,29 @@
         <% } %>
     <% } else { %>
         <% for (SiegeAvion sa : siegesAvions) { %>
-            <div class="col-md-3">
-                <input type="hidden" name="idOffres[]" value="-1">
-                <label for="validationCustomSiege" class="form-label"><%= sa.getIdTypeSiege().getLibelle() %> : <%=sa.getNombre()%> places</label>
-                <div class="input-group has-validation">
-                    <span class="input-group-text" id="basic-addon1">$</span>
-                    <input type="hidden" class="form-control" value="<%= sa.getId() %>" aria-describedby="inputGroupPrepend" required name="idSiegesAvion[]">
-                    <input type="number" step="0.01" class="form-control" value="<%= "0" %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="prix[]">
-                    <div class="invalid-feedback">
-                        Please choose a username.
+            <h5><%= sa.getIdTypeSiege().getLibelle() %> : <%=sa.getNombre()%> places</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="hidden" name="idOffres[]" value="-1">
+                    <label for="validationCustomSiege" class="form-label">Prix</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                        <input type="hidden" class="form-control" value="<%= sa.getId() %>" aria-describedby="inputGroupPrepend" required name="idSiegesAvion[]">
+                        <input type="number" step="0.01" class="form-control" value="<%= "0" %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="prix[]">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="validationCustomSiege" class="form-label">Places en promotion</label>
+                    <div class="input-group has-validation">
+                        <input type="number" class="form-control" value="<%= "0" %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="quantite[]">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="validationCustomSiege" class="form-label">Valeur promotion</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text" id="basic-addon2">%</span>
+                        <input type="hidden" class="form-control">
+                        <input type="number" step="0.01" class="form-control" value="<%= "0" %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="pourc[]">
                     </div>
                 </div>
             </div>
