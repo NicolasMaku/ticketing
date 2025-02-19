@@ -85,6 +85,7 @@ public class VolController {
             @Param(name = "prix[]") Double[] prix,
             @Param(name = "quantite[]") Integer[] nbrePlaces,
             @Param(name = "pourc[]") Double[] poucentages ,
+            @Param(name = "idProm[]") Integer[] idPromotions,
             @Param(name = "idVol") int idVol,
             @Param(name = "idOffres[]") Integer[] idOffres
     ) {
@@ -101,6 +102,7 @@ public class VolController {
         Ville va = vr.findById(idVilleArrivee);
 
         Avion avion = ar.findById(idAvion);
+
 
         if (idVol <0) {
             Vol vol = new Vol(depart,arrivee, vd, va, avion);
@@ -135,6 +137,17 @@ public class VolController {
                 OffreSiegeAvionVol offreNouv = new OffreSiegeAvionVol(prix[i], siege, nouv);
                 offreNouv.setId(offre.getId());
                 offresRepo.update(offreNouv);
+            }
+
+            // update des promotions
+            for (int i = 0; i < idPromotions.length; i++) {
+                Promotion p = new Promotion();
+                p.findById(idPromotions[i], em);
+                if (p.getId() != null) {
+                    p.setNombreSiege(nbrePlaces[i]);
+                    p.setValeurPourcentage(poucentages[i]);
+                    p.update(em);
+                }
             }
 
             volRepo.update(nouv);

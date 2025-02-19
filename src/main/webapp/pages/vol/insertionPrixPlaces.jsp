@@ -1,6 +1,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Objects" %>
 <%@ page import="itu.nicolas.ticketing.models.*" %>
+<%@ page import="jakarta.persistence.EntityManager" %>
+<%@ page import="itu.nicolas.ticketing.utils.JPAUtil" %>
 <%
     List<SiegeAvion> siegesAvions = (List<SiegeAvion>) request.getAttribute("siegesAvion");
     Avion avion = (Avion) request.getAttribute("avion");
@@ -31,17 +33,44 @@
 <%--    <%=offresSiege.size()%>--%>
     <% if (offresSiege != null && !offresSiege.isEmpty()) { %>
         <% for (OffreSiegeAvionVol offre : offresSiege) { %>
-            <div class="col-md-3">
-                <input type="hidden" name="idOffres[]" value="<%=offre.getId()%>">
-                <label for="validationCustomSiege" class="form-label"><%= offre.getIdSiegeAvion().getIdTypeSiege().getLibelle() %> : <%=offre.getIdSiegeAvion().getNombre()%> places</label>
-                <div class="input-group has-validation">
-                    <span class="input-group-text" id="basic-addon1">$</span>
-                    <input type="hidden" class="form-control" value="<%= offre.getIdSiegeAvion().getId() %>" aria-describedby="inputGroupPrepend" required name="idSiegesAvion[]">
-                    <input type="number" step="0.01" class="form-control" value="<%= offre.getPrix() %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="prix[]">
-                    <div class="invalid-feedback">
-                        Please choose a username.
+            <h5><%= offre.getIdSiegeAvion().getIdTypeSiege().getLibelle() %> : <%=offre.getIdSiegeAvion().getNombre()%> places</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="hidden" name="idOffres[]" value="<%=offre.getId()%>">
+                    <label for="validationCustomSiege" class="form-label">Prix</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text" id="basic-addon1">$</span>
+                        <input type="hidden" class="form-control" value="<%= offre.getIdSiegeAvion().getId() %>" aria-describedby="inputGroupPrepend" required name="idSiegesAvion[]">
+                        <input type="number" step="0.01" class="form-control" value="<%= offre.getPrix() %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="prix[]">
+                        <div class="invalid-feedback">
+                            Please choose a username.
+                        </div>
                     </div>
                 </div>
+
+                <%
+                    try(EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager()) {
+                        Promotion prom = new Promotion();
+                        prom.findByIdOffre(offre.getId(), em);
+                        int id = -1;
+                        if (prom.getId() != null) id=prom.getId();
+                %>
+                <div class="col-md-4">
+                    <label for="validationCustomSiege" class="form-label">Places en promotion</label>
+                    <div class="input-group has-validation">
+                        <input type="hidden" value="<%= id %>" required name="idProm[]">
+                        <input type="number" class="form-control" value="<%= (prom.getNombreSiege() != null) ? prom.getNombreSiege() : 0 %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="quantite[]">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="validationCustomSiege" class="form-label">Valeur promotion</label>
+                    <div class="input-group has-validation">
+                        <span class="input-group-text" id="basic-addon2">%</span>
+                        <input type="hidden" class="form-control">
+                        <input type="number" step="0.01" class="form-control" value="<%= (prom.getValeurPourcentage() != null) ? prom.getValeurPourcentage() : "0" %>" id="validationCustomSiege" aria-describedby="inputGroupPrepend" required name="pourc[]">
+                    </div>
+                </div>
+                <% } %>
             </div>
         <% } %>
     <% } else { %>

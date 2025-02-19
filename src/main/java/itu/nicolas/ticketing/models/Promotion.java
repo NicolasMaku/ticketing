@@ -88,6 +88,21 @@ public class Promotion {
         }
     }
 
+    public void update(EntityManager em) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(this);
+            tx.commit();
+        } catch (Exception ex) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            throw new RuntimeException("Erreur lors de la mise à jour du promotion", ex);
+        }
+    }
+
+
     public void findById(int id, EntityManager em) {
         try {
             Promotion p = em.find(Promotion.class, id);
