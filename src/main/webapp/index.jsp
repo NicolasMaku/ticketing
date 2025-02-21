@@ -1,5 +1,7 @@
+<%@ page import="itu.nicolas.ticketing.models.UserTicketing" %>
 <%
   String pg = (String) request.getAttribute("page");
+  UserTicketing user = (UserTicketing) session.getAttribute("user");
 %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
@@ -21,7 +23,7 @@
     <div class="collapse d-flex" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/ticketing/reservation/liste?idUser=1">Mes reservations</a>
+          <a class="nav-link active" aria-current="page" href="/ticketing/reservation/liste?idUser=<%=user.getId()%>">Mes reservations</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/ticketing/vol/multicritere-front">Vol</a>
@@ -41,8 +43,10 @@
         </li>
       </ul>
     </div>
-    <div>
-      <a class="nav-link" href="">A propos</a>
+    <div class="d-flex">
+      <p><%=user.getUsername()%></p>
+      <p> - </p>
+      <a class="nav-link" href="/ticketing/deconnexion">Se deconnecter</a>
     </div>
   </div>
 </nav>

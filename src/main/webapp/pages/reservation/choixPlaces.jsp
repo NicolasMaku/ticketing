@@ -22,7 +22,7 @@
                     int soustraire = 0;
                     if (etatOffre != null) soustraire = etatOffre.getNombre();
                 %>
-                <input class="mt-0 mx-3 p-3" type="radio" name="idOffre" aria-label="Checkbox for following text input" value="<%=o.getId()%>">
+                <input class="mt-0 mx-3 p-3" type="radio" name="res.idOffreSiegeAvionVol" aria-label="Checkbox for following text input" value="<%=o.getId()%>">
                 <div><%=o.getIdSiegeAvion().getIdTypeSiege().getLibelle() + " : " + o.getPrix() %>$ ; restant: <%=o.getIdSiegeAvion().getNombre() - soustraire%> </div>
             </div>
         </div>

@@ -1,13 +1,16 @@
 package itu.nicolas.ticketing.controller;
 
-import mg.itu.prom16.annotations.Controller;
-import mg.itu.prom16.annotations.Get;
-import mg.itu.prom16.annotations.Post;
-import mg.itu.prom16.annotations.Url;
+import itu.nicolas.ticketing.models.UserTicketing;
+import itu.nicolas.ticketing.utils.JPAUtil;
+import jakarta.persistence.EntityManager;
+import mg.itu.prom16.annotations.*;
 import mg.itu.prom16.retourController.ModelView;
+import util.CustomSession;
 
 @Controller
 public class UserController {
+
+    EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
 
     @Get
     @Url("formulaire")
@@ -25,8 +28,25 @@ public class UserController {
 
     @Post
     @Url("login/traitement")
-    public String traitementLogin() {
-//        ModelView mv = new ModelView("/webapp/login.jsp");
-        return "redirect:/home";
+    public String traitementLogin(
+            @Param(name = "email") String email,
+            @Param(name = "mdp") String mdp,
+            CustomSession session
+    ) {
+        UserTicketing user = new UserTicketing(email, mdp);
+        if (user.findByLogin(em)) {
+            session.add("user", user);
+            return "redirect:/vol/multicritere-front";
+        }
+
+        String message = "Mauvais login";
+        return "redirect:/login?erreur=" + message;
+    }
+
+    @Get
+    @Url("deconnexion")
+    public String deconnexion(CustomSession session) {
+        session.delete("user");
+        return "redirect:/login";
     }
 }

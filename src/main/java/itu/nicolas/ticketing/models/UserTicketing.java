@@ -1,5 +1,6 @@
 package itu.nicolas.ticketing.models;
 
+import itu.nicolas.ticketing.repository.UserTicketingRepository;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.*;
 
@@ -17,6 +18,29 @@ public class UserTicketing {
 
     @Column(name = "password", length = 50)
     private String password;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "id_role", nullable = false)
+    private Role idRole;
+
+    @Column(name = "email")
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Role getIdRole() {
+        return idRole;
+    }
+
+    public void setIdRole(Role idRole) {
+        this.idRole = idRole;
+    }
 
     public Integer getId() {
         return id;
@@ -49,7 +73,7 @@ public class UserTicketing {
     }
 
     public List<Reservation> findAllReservationEnCours(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idOffreSiegeAvionVol.idVol.departVol > CURRENT_TIMESTAMP", Reservation.class)
+        return em.createQuery("SELECT v FROM Reservation v where v.userTicketing.id = ?1 and v.offreSiegeAvionVol.idVol.departVol > CURRENT_TIMESTAMP", Reservation.class)
                 .setParameter(1, this.getId())
                 .getResultList();
     }
@@ -61,11 +85,25 @@ public class UserTicketing {
     }
 
     public List<Reservation> findAllReservationFini(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idOffreSiegeAvionVol.idVol.departVol < CURRENT_TIMESTAMP", Reservation.class)
+        return em.createQuery("SELECT v FROM Reservation v where v.userTicketing.id = ?1 and v.offreSiegeAvionVol.idVol.departVol < CURRENT_TIMESTAMP", Reservation.class)
                 .setParameter(1, this.getId())
                 .getResultList();
     }
 
+    public UserTicketing() {
+    }
+
+    public UserTicketing(String username, String password, Role idRole, String email) {
+        this.username = username;
+        this.password = password;
+        this.idRole = idRole;
+        this.email = email;
+    }
+
+    public UserTicketing(String email, String password) {
+        this.password = password;
+        this.email = email;
+    }
 
     public void findById(int id, EntityManager em) {
         try {
@@ -82,5 +120,20 @@ public class UserTicketing {
         this.username = u.username;
     }
 
+    public boolean findByLogin(EntityManager em) {
+        List<UserTicketing> users = em.createQuery("SELECT v FROM UserTicketing v where v.email = ?1 and v.password = ?2", UserTicketing.class)
+                .setParameter(1, email)
+                .setParameter(2, password)
+                .getResultList();
 
+        if (users.isEmpty()) return false;
+        if (users.size() > 1) return false;
+
+        this.adapt(users.get(0));
+        return true;
+    }
+
+    public UserTicketing(Integer id) {
+        this.id = id;
+    }
 }

@@ -6,6 +6,7 @@ import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import mg.itu.prom16.annotations.*;
 import mg.itu.prom16.retourController.ModelView;
+import util.CustomSession;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,14 +33,16 @@ public class ReservationController {
     @Url("reservation/traitement")
     public String traitement(
             @Param(name = "idVol") Integer idVol,
-            @Param(name = "idOffre") Integer idOffre
+            @Param(name = "idOffre") Integer idOffre,
+            CustomSession session
     ) {
         UserTicketingRepository userRepo = new UserTicketingRepository(em);
         OffreSiegeAvionVolRepository offreRepo = new OffreSiegeAvionVolRepository(em);
         EtatOffreRepository etatOffreRepository = new EtatOffreRepository(em);
         VolRepository vr = new VolRepository(em);
 
-        UserTicketing user = userRepo.findById(1);
+        UserTicketing user = (UserTicketing) session.get("user");
+        System.out.println("TRRRRRRRRRRRRRRRRRRRRRRRRRRRR" + user.getId());
         OffreSiegeAvionVol offre = new OffreSiegeAvionVol();
         offre.findById(idOffre, em);
 
@@ -80,14 +83,14 @@ public class ReservationController {
     @Get
     @Url("reservation/liste")
     public ModelView liste(
-            @Param(name = "idUser") int idUser,
-            @Param(name = "erreur") String erreur
+            @Param(name = "erreur") String erreur,
+            CustomSession session
     ) {
+        UserTicketing u = (UserTicketing) session.get("user");
+        if (u == null) return new ModelView("redirect:/ticketing/login");
+
         OffreSiegeAvionVolRepository offresRepo = new OffreSiegeAvionVolRepository(em);
         VolRepository vr = new VolRepository(em);
-
-        UserTicketing u = new UserTicketing();
-        u.findById(1, em);
 
         mg.itu.prom16.retourController.ModelView mv = new mg.itu.prom16.retourController.ModelView("/webapp/index.jsp");
         mv.addObject("page", "pages/reservation/liste.jsp");

@@ -17,13 +17,6 @@ public class UserTicketingRepository {
     public List<UserTicketing> findAll() {
         return em.createQuery("SELECT v FROM UserTicketing v", UserTicketing.class).getResultList();
     }
-    public UserTicketing findById(int id) {
-        try {
-            return em.find(UserTicketing.class, id);
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
     public void save(ConfigurationLimite conf) {
         EntityTransaction tx = em.getTransaction();

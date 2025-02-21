@@ -12,6 +12,7 @@ C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\OffreSiegeAvionVol.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\Promotion.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\Reservation.java
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\Role.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\SiegeAvion.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\TypeSiege.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\models\User.java

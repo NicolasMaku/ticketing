@@ -92,4 +92,7 @@ public class OffreSiegeAvionVol {
         this.prix = o.getPrix();
     }
 
+    public OffreSiegeAvionVol(Integer id) {
+        this.id = id;
+    }
 }
