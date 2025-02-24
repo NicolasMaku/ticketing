@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import mg.itu.prom16.annotations.*;
 import mg.itu.prom16.retourController.ModelView;
 
+@Authorization("admin")
 @Controller
 public class ConfigurationLimiteController {
     EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();

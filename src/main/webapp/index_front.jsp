@@ -23,17 +23,10 @@
     <div class="collapse d-flex" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link" href="/ticketing/configurations/form">Configurations</a>
+          <a class="nav-link active" aria-current="page" href="/ticketing/reservation/liste?idUser=<%=user.getId()%>">Mes reservations</a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Vol
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="/ticketing/vol/form">Inserer</a></li>
-            <li><a class="dropdown-item" href="/ticketing/vol">Gerer</a></li>
-            <li><a class="dropdown-item" href="/ticketing/vol/multicritere">Recherche multicritere</a></li>
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link" href="/ticketing/vol/multicritere-front">Vol</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/ticketing/deconnexion">Se deconnecter</a>

@@ -8,7 +8,7 @@
     EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
 %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<form class="row g-3" action="/ticketing/reservation/traitement" method="post">
+<form class="row g-3" action="/ticketing/reservation/traitement" method="post" enctype="multipart/form-data">
 
     <h3>Reservation</h3>
     <p>Choisissez votre classe</p>
@@ -22,7 +22,7 @@
                     int soustraire = 0;
                     if (etatOffre != null) soustraire = etatOffre.getNombre();
                 %>
-                <input class="mt-0 mx-3 p-3" type="radio" name="res.idOffreSiegeAvionVol" aria-label="Checkbox for following text input" value="<%=o.getId()%>">
+                <input class="mt-0 mx-3 p-3" type="radio" name="idOffre" aria-label="Checkbox for following text input" value="<%=o.getId()%>">
                 <div><%=o.getIdSiegeAvion().getIdTypeSiege().getLibelle() + " : " + o.getPrix() %>$ ; restant: <%=o.getIdSiegeAvion().getNombre() - soustraire%> </div>
             </div>
         </div>
@@ -30,7 +30,10 @@
 <%--    <%=vol.getId()%>--%>
 <%--    <%=offresSiege.isEmpty()%>--%>
 <%--    <%=offresSiege.size()%>--%>
-
+    <div>
+        <p>Inserer passeport</p>
+        <input type="file" name="image" >
+    </div>
     <div class="col-12">
         <button class="btn btn-primary" type="submit">Valider formulaire</button>
     </div>

@@ -28,19 +28,21 @@ public class UserController {
 
     @Post
     @Url("login/traitement")
-    public String traitementLogin(
-            @Param(name = "email") String email,
-            @Param(name = "mdp") String mdp,
+    public ModelView traitementLogin(
+            @Model("user") UserTicketing user,
+//            @Param(name = "email") String email,
+//            @Param(name = "password") String mdp,
             CustomSession session
     ) {
-        UserTicketing user = new UserTicketing(email, mdp);
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        mv.setErrorUrl("/login");
         if (user.findByLogin(em)) {
             session.add("user", user);
-            return "redirect:/vol/multicritere-front";
+            if (user.getIdRole().getId() == 1) mv.setUrl("redirect:/vol/multicritere-front");
+            if (user.getIdRole().getId() == 2) mv.setUrl("redirect:/vol/multicritere");
         }
 
-        String message = "Mauvais login";
-        return "redirect:/login?erreur=" + message;
+        return mv;
     }
 
     @Get

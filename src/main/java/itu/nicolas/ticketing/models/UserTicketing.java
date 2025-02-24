@@ -3,6 +3,9 @@ package itu.nicolas.ticketing.models;
 import itu.nicolas.ticketing.repository.UserTicketingRepository;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.*;
+import mg.itu.prom16.annotations.verification.Numeric;
+import mg.itu.prom16.annotations.verification.Required;
+import mg.itu.prom16.annotations.verification.Size;
 
 import java.util.List;
 
@@ -17,6 +20,8 @@ public class UserTicketing {
     private String username;
 
     @Column(name = "password", length = 50)
+    @Size(min = 1,max = 5)
+    @Numeric
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -24,6 +29,7 @@ public class UserTicketing {
     private Role idRole;
 
     @Column(name = "email")
+    @Required
     private String email;
 
     public String getEmail() {
@@ -73,7 +79,7 @@ public class UserTicketing {
     }
 
     public List<Reservation> findAllReservationEnCours(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v where v.userTicketing.id = ?1 and v.offreSiegeAvionVol.idVol.departVol > CURRENT_TIMESTAMP", Reservation.class)
+        return em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idOffreSiegeAvionVol.idVol.departVol > CURRENT_TIMESTAMP", Reservation.class)
                 .setParameter(1, this.getId())
                 .getResultList();
     }
@@ -85,7 +91,7 @@ public class UserTicketing {
     }
 
     public List<Reservation> findAllReservationFini(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v where v.userTicketing.id = ?1 and v.offreSiegeAvionVol.idVol.departVol < CURRENT_TIMESTAMP", Reservation.class)
+        return em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idOffreSiegeAvionVol.idVol.departVol < CURRENT_TIMESTAMP", Reservation.class)
                 .setParameter(1, this.getId())
                 .getResultList();
     }
@@ -118,6 +124,7 @@ public class UserTicketing {
         this.id = u.getId();
         this.password = u.getPassword();
         this.username = u.username;
+        this.idRole = u.getIdRole();
     }
 
     public boolean findByLogin(EntityManager em) {
@@ -133,7 +140,5 @@ public class UserTicketing {
         return true;
     }
 
-    public UserTicketing(Integer id) {
-        this.id = id;
-    }
+
 }

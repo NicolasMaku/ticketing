@@ -5,8 +5,10 @@ import itu.nicolas.ticketing.models.*;
 import itu.nicolas.ticketing.repository.*;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
+import mg.itu.prom16.annotations.Role;
 import mg.itu.prom16.retourController.ModelView;
 import mg.itu.prom16.annotations.*;
+import util.CustomSession;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -23,6 +25,7 @@ public class VolController {
 
     @Get
     @Url("vol")
+    @Role("admin")
     public ModelView lister() {
         ModelView mv = new ModelView("/webapp/index.jsp");
         mv.addObject("page", "pages/liste.jsp");
@@ -32,6 +35,7 @@ public class VolController {
 
     @Get
     @Url("vol/form")
+    @Role("admin")
     public ModelView formulaire() {
         VilleRepository vr = new VilleRepository(em);
         AvionRepository ar = new AvionRepository(em);
@@ -46,6 +50,7 @@ public class VolController {
 
     @Post
     @Url("vol/formPrix")
+    @Role("admin")
     public ModelView formulairePrix(
             @Param(name = "idAvion") int idAvion,
             @Param(name = "idVol") int idVol
@@ -75,6 +80,7 @@ public class VolController {
 
     @Post
     @Url("vol/new")
+    @Role("admin")
     public String inserer(
             @Param(name = "idVilleDepart") int idVilleDepart,
             @Param(name = "idVilleArrivee") int idVilleArrivee,
@@ -158,6 +164,7 @@ public class VolController {
 
     @Get
     @Url("vol/multicritere")
+    @Role("admin")
     public ModelView multicritere(
 
     ) {
@@ -176,6 +183,7 @@ public class VolController {
 
     @Get
     @Url("vol/multicritere-front")
+    @Role("client")
     public ModelView multicritereFront(
         @Param(name = "erreur") String erreur
     ) {
@@ -184,7 +192,7 @@ public class VolController {
         SiegeAvionRepository sar = new SiegeAvionRepository(em);
         VolRepository volrepo = new VolRepository(em);
 
-        ModelView mv = new ModelView("/webapp/index.jsp");
+        ModelView mv = new ModelView("/webapp/index_front.jsp");
         mv.addObject("page", "pages/vol/rechercheMultiFront.jsp");
         mv.addObject("vols", volRepo.findAll());
         mv.addObject("villes",vr.findAll());
@@ -196,6 +204,7 @@ public class VolController {
 
     @Post
     @Url("vol/traite-multi")
+    @Role
     public ModelView traitementMulticritere(
         @Param(name = "idVilleDepart") Integer idVilleDepart,
         @Param(name = "idVilleArrivee") Integer idVilleArrivee,
@@ -203,7 +212,8 @@ public class VolController {
         @Param(name = "arriveeVol") String arriveeVol,
         @Param(name = "idAvion") Integer idAvion,
         @Param(name = "prixMin") Double prixMin,
-        @Param(name = "prixMax") Double prixMax
+        @Param(name = "prixMax") Double prixMax,
+        CustomSession session
     ) {
         VilleRepository vr = new VilleRepository(em);
         AvionRepository ar = new AvionRepository(em);
@@ -224,7 +234,13 @@ public class VolController {
         List<Vol> corresp = volrepo.rechercheMulti(idVilleDepart, idVilleArrivee, depart, arrivee, idAvion, prixMin, prixMax);
 
         ModelView mv = new ModelView("/webapp/index.jsp");
-        mv.addObject("page", "pages/vol/rechercheMulti.jsp");
+
+        UserTicketing u = (UserTicketing) session.get("user");
+        if (u.getIdRole().getId() == 2) mv.addObject("page", "pages/vol/rechercheMulti.jsp");
+        else if (u.getIdRole().getId() == 1) {
+            mv.setUrl("/webapp/index_front.jsp");
+            mv.addObject("page", "pages/vol/rechercheMultiFront.jsp");
+        }
         mv.addObject("vols",corresp);
         mv.addObject("villes",vr.findAll());
         mv.addObject("avions",ar.findAll());
@@ -234,6 +250,7 @@ public class VolController {
 
     @Get
     @Url("vol/delete")
+    @Role("admin")
     public String update(
             @Param(name = "id") int idVol
     ) {
@@ -245,6 +262,7 @@ public class VolController {
 
     @Get
     @Url("vol/update")
+    @Role("admin")
     public ModelView formUpdate(
             @Param(name = "id") int idVol
     ) {

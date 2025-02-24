@@ -2,6 +2,7 @@ package itu.nicolas.ticketing.models;
 
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.*;
+import util.MyFile;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -32,6 +33,21 @@ public class Reservation {
 
     @Column(name = "prix")
     private Double prix;
+
+    @Transient
+    private MyFile file;
+
+    @Column(name = "passeport")
+    private byte[] passeport;
+
+    public byte[] getPasseport() {
+        return passeport;
+    }
+
+    public void setPasseport(byte[] passeport) {
+        this.passeport = passeport;
+    }
+
 
     public Integer getId() {
         return id;

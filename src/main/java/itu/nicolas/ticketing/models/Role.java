@@ -10,6 +10,17 @@ public class Role {
     @Column(name = "id_role", nullable = false)
     private Integer id;
 
+    @Column(name = "libelle", length = 50)
+    private String libelle;
+
+    public String getLibelle() {
+        return libelle;
+    }
+
+    public void setLibelle(String libelle) {
+        this.libelle = libelle;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -17,6 +28,4 @@ public class Role {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    //TODO [JPA Buddy] generate columns from DB
 }

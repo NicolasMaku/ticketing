@@ -2,6 +2,8 @@
 <%@ page import="java.util.Objects" %>
 <%@ page import="itu.nicolas.ticketing.models.*" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
+<%@ page import="java.beans.Encoder" %>
+<%@ page import="java.util.Base64" %>
 <%
     List<Reservation> reservations = (List<Reservation>) request.getAttribute("reservations");
     List<Reservation> reservationsFini = (List<Reservation>) request.getAttribute("reservationsFini");
@@ -27,6 +29,7 @@
             <th scope="col">Avion</th>
             <th scope="col">Decollage</th>
             <th scope="col">Arrivée</th>
+            <th scope="col">passeport</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -39,6 +42,9 @@
             <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
             <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getDepartVol().format(formatter)%></td>
             <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getArriveeVol().format(formatter)%></td>
+            <td><% if (r.getPasseport() != null) { %>
+                <img style="height: 3rem" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(r.getPasseport())%>" alt="">
+            <% } %> </td>
             <td>
                 <% if (r.getDateAnnulation() == null) { %>
                     <form action="/ticketing/reservation/annuler" method="post">

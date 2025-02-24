@@ -7,10 +7,13 @@ import jakarta.persistence.EntityManager;
 import mg.itu.prom16.annotations.*;
 import mg.itu.prom16.retourController.ModelView;
 import util.CustomSession;
+import util.MyFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Authorization("client")
 @Controller
 public class ReservationController {
     EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
@@ -23,7 +26,7 @@ public class ReservationController {
         OffreSiegeAvionVolRepository offresRepo = new OffreSiegeAvionVolRepository(em);
         VolRepository vr = new VolRepository(em);
 
-        mg.itu.prom16.retourController.ModelView mv = new mg.itu.prom16.retourController.ModelView("/webapp/index.jsp");
+        mg.itu.prom16.retourController.ModelView mv = new mg.itu.prom16.retourController.ModelView("/webapp/index_front.jsp");
         mv.addObject("page", "pages/reservation/choixPlaces.jsp");
         mv.addObject("offres", offresRepo.findByVol(vr.findById(idVol)));
         return mv;
@@ -34,8 +37,9 @@ public class ReservationController {
     public String traitement(
             @Param(name = "idVol") Integer idVol,
             @Param(name = "idOffre") Integer idOffre,
+            @Param(name = "image") MyFile image,
             CustomSession session
-    ) {
+    ) throws IOException {
         UserTicketingRepository userRepo = new UserTicketingRepository(em);
         OffreSiegeAvionVolRepository offreRepo = new OffreSiegeAvionVolRepository(em);
         EtatOffreRepository etatOffreRepository = new EtatOffreRepository(em);
@@ -75,7 +79,10 @@ public class ReservationController {
         }
 
         Reservation res = new Reservation(timeReserv, user, offre,prix);
+        res.setPasseport(image.getBytes());
         res.save(em);
+
+//        image.sauvegarder("C:/Users/nicol/Documents/0-ITU/S5/ticketing/assets");
 
         return "redirect:/vol/multicritere-front";
     }
@@ -92,7 +99,7 @@ public class ReservationController {
         OffreSiegeAvionVolRepository offresRepo = new OffreSiegeAvionVolRepository(em);
         VolRepository vr = new VolRepository(em);
 
-        mg.itu.prom16.retourController.ModelView mv = new mg.itu.prom16.retourController.ModelView("/webapp/index.jsp");
+        mg.itu.prom16.retourController.ModelView mv = new mg.itu.prom16.retourController.ModelView("/webapp/index_front.jsp");
         mv.addObject("page", "pages/reservation/liste.jsp");
         mv.addObject("reservations", u.findAllReservationEnCours(em));
         mv.addObject("reservationsFini", u.findAllReservationFini(em));
