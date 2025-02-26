@@ -9,10 +9,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <form class="row g-3 needs-validation" novalidate method="post" action="/ticketing/vol/formPrix">
     <h3>Insertion - Information sur le vol</h3>
-    <input type="hidden" name="vol.id" value="<%= (vol != null) ? vol.getId() : -1 %>">
+    <input type="hidden" name="idVol" value="<%= (vol != null) ? vol.getId() : -1 %>">
     <div class="col-md-4">
         <label for="validationCustom00" class="form-label">Avion</label>
-        <select class="form-select" id="validationCustom00" required name="avion.id">
+        <select class="form-select" id="validationCustom00" required name="idAvion">
             <option selected disabled value="">Choisissez un avion</option>
             <% for(Avion a: avions) { %>
               <option value="<%=a.getId()%>" <%= (vol != null && Objects.equals(vol.getIdAvion().getId(), a.getId())) ? "selected" : "" %> ><%=a.getLibelle()%></option>
@@ -21,7 +21,7 @@
     </div>
     <div class="col-md-4">
         <label for="validationCustom01" class="form-label">Ville départ</label>
-        <select class="form-select" id="validationCustom01" required name="v1.id">
+        <select class="form-select" id="validationCustom01" required name="idVilleDepart">
             <option selected disabled value="">Choisissez une ville</option>
             <% for(Ville v : villes) { %>
                 <option value="<%=v.getId()%>" <%= (vol != null && Objects.equals(vol.getIdVilleDepart().getId(), v.getId())) ? "selected" : "" %> ><%=v.getNom()%></option>
@@ -30,7 +30,7 @@
     </div>
     <div class="col-md-4">
         <label for="validationCustom02" class="form-label">Ville arrivé</label>
-        <select class="form-select" id="validationCustom02" required name="v2.id">
+        <select class="form-select" id="validationCustom02" required name="idVilleArrivee">
             <option selected disabled value="">Choisissez une ville</option>
             <% for(Ville v : villes) { %>
             <option value="<%=v.getId()%>" <%= (vol != null && Objects.equals(vol.getIdVilleArrivee().getId(), v.getId())) ? "selected" : "" %> ><%=v.getNom()%></option>

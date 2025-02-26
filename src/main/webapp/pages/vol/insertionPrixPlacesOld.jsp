@@ -14,10 +14,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <form class="row g-3" action="/ticketing/vol/new" method="post">
 
-    <input type="hidden" name="vol.id" value="<%=request.getParameter("vol.id")%>">
-    <input type="hidden" name="avion.id" value="<%=request.getParameter("avion.id")%>">
-    <input type="hidden" name="v1.id" value="<%=request.getParameter("v1.id")%>">
-    <input type="hidden" name="v2.id" value="<%=request.getParameter("v2.id")%>">
+    <input type="hidden" name="idVol" value="<%=request.getParameter("idVol")%>">
+    <input type="hidden" name="idAvion" value="<%=request.getParameter("idAvion")%>">
+    <input type="hidden" name="idVilleDepart" value="<%=request.getParameter("idVilleDepart")%>">
+    <input type="hidden" name="idVilleArrivee" value="<%=request.getParameter("idVilleArrivee")%>">
     <input type="hidden" name="departVol" value="<%=request.getParameter("departVol")%>">
     <input type="hidden" name="arriveeVol" value="<%=request.getParameter("arriveeVol")%>">
 

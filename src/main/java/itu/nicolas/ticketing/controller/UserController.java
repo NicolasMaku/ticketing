@@ -38,8 +38,8 @@ public class UserController {
         mv.setErrorUrl("/login");
         if (user.findByLogin(em)) {
             session.add("user", user);
-            if (user.getIdRole().getId() == 1) mv.setUrl("redirect:/vol/multicritere-front");
-            if (user.getIdRole().getId() == 2) mv.setUrl("redirect:/vol/multicritere");
+            if (user.getIdRole().getId() == 1) mv.setUrl("redirect:/ticketing/vol/multicritere-front");
+            if (user.getIdRole().getId() == 2) mv.setUrl("redirect:/ticketing/vol/multicritere");
         }
 
         return mv;

@@ -73,6 +73,8 @@ public class Promotion {
     }
 
     public void saveAll(List<Promotion> proms, EntityManager em) {
+        if (proms.isEmpty()) return;
+
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

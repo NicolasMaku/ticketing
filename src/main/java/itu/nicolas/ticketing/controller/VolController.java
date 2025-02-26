@@ -52,8 +52,8 @@ public class VolController {
     @Url("vol/formPrix")
     @Role("admin")
     public ModelView formulairePrix(
-            @Param(name = "idAvion") int idAvion,
-            @Param(name = "idVol") int idVol
+            @Model("avion") Avion avion,
+            @Model("vol") Vol vol
     ) {
         AvionRepository ar = new AvionRepository(em);
         GenericRepository<TypeSiege> typeSiegeRepo = new GenericRepository<TypeSiege>(em, TypeSiege.class);
@@ -61,8 +61,9 @@ public class VolController {
         VolRepository vr = new VolRepository(em);
         OffreSiegeAvionVolRepository offresRepo = new OffreSiegeAvionVolRepository(em);
 
-        Avion avion = ar.findById(idAvion);
-        Vol vol = vr.findById(idVol);
+        avion = ar.findById(avion.getId());
+        vol.findById(vol.getId(), em);
+        System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII " + vol.getId());
 
         ModelView mv = new ModelView("/webapp/index.jsp");
         mv.addObject("page", "pages/vol/insertionPrixPlaces.jsp");
@@ -70,7 +71,7 @@ public class VolController {
         mv.addObject("siegesAvion", sar.findByAvion(avion));
         mv.addObject("vol", vol);
 
-        if (idVol > 0) {
+        if (vol.getId() > 0) {
             mv.addObject("offresSiege", offresRepo.findByVol(vol));
 //            mv.addObject("offresSiege", vol.getOffreSiegeAvionVols());
         }
@@ -82,17 +83,17 @@ public class VolController {
     @Url("vol/new")
     @Role("admin")
     public String inserer(
-            @Param(name = "idVilleDepart") int idVilleDepart,
-            @Param(name = "idVilleArrivee") int idVilleArrivee,
+            @Model("vol") Vol vol,
+            @Model("v1") Ville villeDepart,
+            @Model("v2") Ville villeArrivee,
             @Param(name = "departVol") String departVol,
             @Param(name = "arriveeVol") String arriveeVol,
-            @Param(name = "idAvion") int idAvion,
+            @Model("avion") Avion avion,
             @Param(name = "idSiegesAvion[]") Integer[] idSiegesAvion,
             @Param(name = "prix[]") Double[] prix,
             @Param(name = "quantite[]") Integer[] nbrePlaces,
             @Param(name = "pourc[]") Double[] poucentages ,
             @Param(name = "idProm[]") Integer[] idPromotions,
-            @Param(name = "idVol") int idVol,
             @Param(name = "idOffres[]") Integer[] idOffres
     ) {
         VilleRepository vr = new VilleRepository(em);
@@ -104,15 +105,11 @@ public class VolController {
         LocalDateTime depart = LocalDateTime.parse(departVol, formatter);
         LocalDateTime arrivee = LocalDateTime.parse(arriveeVol, formatter);
 
-        Ville vd = vr.findById(idVilleDepart);
-        Ville va = vr.findById(idVilleArrivee);
 
-        Avion avion = ar.findById(idAvion);
-
-
-        if (idVol <0) {
-            Vol vol = new Vol(depart,arrivee, vd, va, avion);
-            volRepo.save(vol);
+        if (vol.getId() <0) {
+            System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHh");
+            Vol vol2 = new Vol(depart,arrivee, villeDepart, villeArrivee, avion);
+            volRepo.save(vol2);
 
             // creation des offres de places et promotion
             List<OffreSiegeAvionVol> offres = new ArrayList<>();
@@ -120,7 +117,7 @@ public class VolController {
 
             for (int i = 0; i < idSiegesAvion.length ; i++) {
                 SiegeAvion siege = sar.findById(idSiegesAvion[i]);
-                OffreSiegeAvionVol offre = new OffreSiegeAvionVol(prix[i], siege, vol);
+                OffreSiegeAvionVol offre = new OffreSiegeAvionVol(prix[i], siege, vol2);
                 offres.add(offre);
 
                 if (nbrePlaces[i] > 0) {
@@ -129,11 +126,16 @@ public class VolController {
                 }
             }
             offresRepo.saveAll(offres);
-            promotions.get(0).saveAll(promotions, em);
+            if (!promotions.isEmpty())
+                promotions.get(0).saveAll(promotions, em);
+            else {
+                Promotion p = new Promotion();
+                p.saveAll(promotions, em);
+            }
 
         } else {
-            Vol ancien = volRepo.findById(idVol);
-            Vol nouv = new Vol(depart,arrivee, vd, va, avion);
+            Vol ancien = volRepo.findById(vol.getId());
+            Vol nouv = new Vol(depart,arrivee, villeDepart, villeArrivee, avion);
             nouv.setId(ancien.getId());
 
             for (int i = 0; i < idOffres.length ; i++) {
@@ -161,6 +163,90 @@ public class VolController {
 
         return "redirect:/vol";
     }
+
+//    @Post
+//    @Url("vol/new")
+//    @Role("admin")
+//    public String inserer(
+//            @Param(name = "idVilleDepart") int idVilleDepart,
+//            @Param(name = "idVilleArrivee") int idVilleArrivee,
+//            @Param(name = "departVol") String departVol,
+//            @Param(name = "arriveeVol") String arriveeVol,
+//            @Param(name = "idAvion") int idAvion,
+//            @Param(name = "idSiegesAvion[]") Integer[] idSiegesAvion,
+//            @Param(name = "prix[]") Double[] prix,
+//            @Param(name = "quantite[]") Integer[] nbrePlaces,
+//            @Param(name = "pourc[]") Double[] poucentages ,
+//            @Param(name = "idProm[]") Integer[] idPromotions,
+//            @Param(name = "idVol") int idVol,
+//            @Param(name = "idOffres[]") Integer[] idOffres
+//    ) {
+//        VilleRepository vr = new VilleRepository(em);
+//        AvionRepository ar = new AvionRepository(em);
+//        SiegeAvionRepository sar = new SiegeAvionRepository(em);
+//        OffreSiegeAvionVolRepository offresRepo = new OffreSiegeAvionVolRepository(em);
+//
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+//        LocalDateTime depart = LocalDateTime.parse(departVol, formatter);
+//        LocalDateTime arrivee = LocalDateTime.parse(arriveeVol, formatter);
+//
+//        Ville vd = vr.findById(idVilleDepart);
+//        Ville va = vr.findById(idVilleArrivee);
+//
+//        Avion avion = ar.findById(idAvion);
+//
+//
+//        if (idVol <0) {
+//            Vol vol = new Vol(depart,arrivee, vd, va, avion);
+//            volRepo.save(vol);
+//
+//            // creation des offres de places et promotion
+//            List<OffreSiegeAvionVol> offres = new ArrayList<>();
+//            List<Promotion> promotions = new ArrayList<>();
+//
+//            for (int i = 0; i < idSiegesAvion.length ; i++) {
+//                SiegeAvion siege = sar.findById(idSiegesAvion[i]);
+//                OffreSiegeAvionVol offre = new OffreSiegeAvionVol(prix[i], siege, vol);
+//                offres.add(offre);
+//
+//                if (nbrePlaces[i] > 0) {
+//                    Promotion prom = new Promotion(poucentages[i], nbrePlaces[i], offre);
+//                    promotions.add(prom);
+//                }
+//            }
+//            offresRepo.saveAll(offres);
+//            promotions.get(0).saveAll(promotions, em);
+//
+//        } else {
+//            Vol ancien = volRepo.findById(idVol);
+//            Vol nouv = new Vol(depart,arrivee, vd, va, avion);
+//            nouv.setId(ancien.getId());
+//
+//            for (int i = 0; i < idOffres.length ; i++) {
+//                OffreSiegeAvionVol offre = new OffreSiegeAvionVol();
+//                offre.findById(idOffres[i], em);
+//                SiegeAvion siege = sar.findById(idSiegesAvion[i]);
+//                OffreSiegeAvionVol offreNouv = new OffreSiegeAvionVol(prix[i], siege, nouv);
+//                offreNouv.setId(offre.getId());
+//                offresRepo.update(offreNouv);
+//            }
+//
+//            // update des promotions
+//            for (int i = 0; i < idPromotions.length; i++) {
+//                Promotion p = new Promotion();
+//                p.findById(idPromotions[i], em);
+//                if (p.getId() != null) {
+//                    p.setNombreSiege(nbrePlaces[i]);
+//                    p.setValeurPourcentage(poucentages[i]);
+//                    p.update(em);
+//                }
+//            }
+//
+//            volRepo.update(nouv);
+//        }
+//
+//        return "redirect:/vol";
+//    }
 
     @Get
     @Url("vol/multicritere")

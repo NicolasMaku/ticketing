@@ -20,8 +20,6 @@ public class UserTicketing {
     private String username;
 
     @Column(name = "password", length = 50)
-    @Size(min = 1,max = 5)
-    @Numeric
     private String password;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

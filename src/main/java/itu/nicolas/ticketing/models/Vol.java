@@ -38,6 +38,12 @@ public class Vol {
     @OneToMany(mappedBy = "idVol", cascade = CascadeType.REMOVE)
     private List<OffreSiegeAvionVol> offreSiegeAvionVols = new ArrayList<>();
 
+    @Transient
+    private String departVolString;
+
+    @Transient
+    private String arriveeVolString;
+
     public List<OffreSiegeAvionVol> getOffreSiegeAvionVols() {
         return offreSiegeAvionVols;
     }
@@ -94,7 +100,21 @@ public class Vol {
         this.idVilleArrivee = idVilleArrivee;
     }
 
+    public String getDepartVolString() {
+        return departVolString;
+    }
 
+    public void setDepartVolString(String departVolString) {
+        this.departVolString = departVolString;
+    }
+
+    public String getArriveeVolString() {
+        return arriveeVolString;
+    }
+
+    public void setArriveeVolString(String arriveeVolString) {
+        this.arriveeVolString = arriveeVolString;
+    }
 
     public Vol() {
     }
@@ -105,5 +125,19 @@ public class Vol {
         this.idVilleDepart = idVilleDepart;
         this.idVilleArrivee = idVilleArrivee;
         this.idAvion = idAvion;
+    }
+
+    public void adapt(Vol v) {
+        this.id = v.getId();
+        this.idAvion = v.getIdAvion();
+        this.departVol = v.departVol;
+        this.arriveeVol = v.arriveeVol;
+        this.idVilleDepart = v.idVilleDepart;
+        this.idVilleArrivee = v.idVilleArrivee;
+    }
+    public void findById(int idVol, EntityManager em) {
+        Vol v = em.find(Vol.class, idVol);
+
+        if(v != null) this.adapt(v);
     }
 }
