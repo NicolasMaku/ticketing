@@ -27,6 +27,7 @@ public class UserTicketing {
     private Role idRole;
 
     @Column(name = "email")
+    @Size(min = 12,max= 16)
     @Required
     private String email;
 

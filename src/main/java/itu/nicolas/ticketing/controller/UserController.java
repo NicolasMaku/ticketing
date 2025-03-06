@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import mg.itu.prom16.annotations.*;
 import mg.itu.prom16.retourController.ModelView;
 import util.CustomSession;
+import util.FormValidation;
 
 @Controller
 public class UserController {
@@ -33,7 +34,11 @@ public class UserController {
 //            @Param(name = "email") String email,
 //            @Param(name = "password") String mdp,
             CustomSession session
-    ) {
+    ) throws IllegalAccessException {
+        if (FormValidation.isValid(user)) {
+            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        }
+
         ModelView mv = new ModelView("/webapp/index.jsp");
         mv.setErrorUrl("/login");
         if (user.findByLogin(em)) {
