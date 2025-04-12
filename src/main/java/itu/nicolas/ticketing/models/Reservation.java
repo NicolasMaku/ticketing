@@ -7,7 +7,10 @@ import util.MyFile;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "reservation")
@@ -27,28 +30,41 @@ public class Reservation {
     @JoinColumn(name = "id_user_ticketing", nullable = false)
     private UserTicketing idUserTicketing;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_offre_siege_avion_vol", nullable = false)
-    private OffreSiegeAvionVol idOffreSiegeAvionVol;
-
-    @Column(name = "prix")
-    private Double prix;
-
     @Transient
     private MyFile file;
+    @Column(name = "image")
+    private byte[] image;
 
-    @Column(name = "passeport")
-    private byte[] passeport;
+    @OneToMany(mappedBy = "idReservationMere")
+    private List<ReservationFille> reservationFilles = new ArrayList<>();
 
-    public byte[] getPasseport() {
-        return passeport;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vol")
+    private Vol idVol;
+
+    public Vol getIdVol() {
+        return idVol;
     }
 
-    public void setPasseport(byte[] passeport) {
-        this.passeport = passeport;
+    public void setIdVol(Vol idVol) {
+        this.idVol = idVol;
     }
 
+    public List<ReservationFille> getReservationFilles() {
+        return reservationFilles;
+    }
 
+    public void setReservationFilles(List<ReservationFille> reservationFilles) {
+        this.reservationFilles = reservationFilles;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
     public Integer getId() {
         return id;
     }
@@ -81,22 +97,12 @@ public class Reservation {
         this.idUserTicketing = idUserTicketing;
     }
 
-    public OffreSiegeAvionVol getIdOffreSiegeAvionVol() {
-        return idOffreSiegeAvionVol;
-    }
-
-    public void setIdOffreSiegeAvionVol(OffreSiegeAvionVol idOffreSiegeAvionVol) {
-        this.idOffreSiegeAvionVol = idOffreSiegeAvionVol;
-    }
-
     public Reservation() {
     }
 
-    public Reservation(LocalDateTime dateReservation, UserTicketing idUserTicketing, OffreSiegeAvionVol idOffreSiegeAvionVol, Double prix) {
+    public Reservation(LocalDateTime dateReservation, UserTicketing idUserTicketing) {
         this.dateReservation = dateReservation;
         this.idUserTicketing = idUserTicketing;
-        this.idOffreSiegeAvionVol = idOffreSiegeAvionVol;
-        this.prix = prix;
     }
 
     public List<Reservation> findAll(EntityManager em) {
@@ -115,7 +121,6 @@ public class Reservation {
     public void adapt(Reservation res) {
         this.id = res.getId();
         this.idUserTicketing = res.getIdUserTicketing();
-        this.idOffreSiegeAvionVol = res.getIdOffreSiegeAvionVol();
         this.dateReservation = res.getDateReservation();
         this.dateAnnulation = res.getDateAnnulation();
     }

@@ -25,6 +25,18 @@ public class OffreSiegeAvionVol {
     @JoinColumn(name = "id_vol", nullable = false)
     private Vol idVol;
 
+    @OneToOne(mappedBy = "idOffreSiegeAvionVol")
+    private Promotion promotion;
+
+    public Promotion getPromotion() {
+        return promotion;
+    }
+
+    public void setPromotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
+
     public Integer getId() {
         return id;
     }

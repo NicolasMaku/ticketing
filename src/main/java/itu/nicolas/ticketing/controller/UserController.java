@@ -35,17 +35,18 @@ public class UserController {
 //            @Param(name = "password") String mdp,
             CustomSession session
     ) throws IllegalAccessException {
-        if (FormValidation.isValid(user)) {
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        ModelView mv = new ModelView("/webapp/index.jsp");
+        if (!FormValidation.isValid(user)) {
+            mv.setErrorUrl("/login");
+            return mv;
         }
 
-        ModelView mv = new ModelView("/webapp/index.jsp");
-        mv.setErrorUrl("/login");
         if (user.findByLogin(em)) {
             session.add("user", user);
             if (user.getIdRole().getId() == 1) mv.setUrl("redirect:/ticketing/vol/multicritere-front");
             if (user.getIdRole().getId() == 2) mv.setUrl("redirect:/ticketing/vol/multicritere");
         }
+        else mv.setUrl("/webapp/login.jsp");
 
         return mv;
     }

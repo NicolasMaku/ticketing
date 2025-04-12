@@ -24,7 +24,6 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Classe</th>
             <th scope="col">Trajet</th>
             <th scope="col">Avion</th>
             <th scope="col">Decollage</th>
@@ -34,31 +33,32 @@
         </tr>
         </thead>
         <tbody>
-        <% for(Reservation r : reservations) { %>
-        <tr class="">
-            <th scope="row"><%=r.getId()%></th>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdSiegeAvion().getIdTypeSiege().getLibelle()%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdVilleDepart().getNom()%> - <%=r.getIdOffreSiegeAvionVol().getIdVol().getIdVilleArrivee().getNom()%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getDepartVol().format(formatter)%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getArriveeVol().format(formatter)%></td>
-            <td><% if (r.getPasseport() != null) { %>
-                <img style="height: 3rem" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(r.getPasseport())%>" alt="">
-            <% } %> </td>
-            <td>
-                <% if (r.getDateAnnulation() == null) { %>
-                    <form action="/ticketing/reservation/annuler" method="post">
-                        <input type="hidden" name="id" value="<%=r.getId()%>">
-                        <input type="hidden" name="idUser" value="1">
-                        <button type="submit" class="btn btn-primary btn-sm">
-                            <i class="bi bi-x"></i>Annuler
-                        </button>
-                    </form>
-                <% } else { %>
-                    Annulé
-                <% } %>
-            </td>
-        </tr>
+        <% for(Reservation r : reservations) {
+            if (!r.getReservationFilles().isEmpty()) { %>
+
+            <tr class="">
+                <th scope="row"><%=r.getId()%></th>
+                <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleDepart().getNom()%> - <%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleArrivee().getNom()%></td>
+                <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
+                <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().format(formatter)%></td>
+                <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getArriveeVol().format(formatter)%></td>
+                <td><% if (r.getImage() != null) { %>
+                    <img style="height: 3rem" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(r.getImage())%>" alt="">
+                <% } %> </td>
+                <td>
+                    <% if (r.getDateAnnulation() == null) { %>
+                        <form action="/ticketing/reservation/annuler" method="post">
+                            <input type="hidden" name="id" value="<%=r.getId()%>">
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <i class="bi bi-x"></i>Annuler
+                            </button>
+                        </form>
+                    <% } else { %>
+                        Annulé
+                    <% } %>
+                </td>
+            </tr>
+            <% } %>
         <% } %>
         </tbody>
     </table>
@@ -81,11 +81,11 @@
         <% for(Reservation r : reservationsFini) { %>
         <tr class="">
             <th scope="row"><%=r.getId()%></th>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdSiegeAvion().getIdTypeSiege().getLibelle()%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdVilleDepart().getNom()%> - <%=r.getIdOffreSiegeAvionVol().getIdVol().getIdVilleArrivee().getNom()%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getDepartVol().format(formatter)%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getArriveeVol().format(formatter)%></td>
+            <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdSiegeAvion().getIdTypeSiege().getLibelle()%></td>
+            <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleDepart().getNom()%> - <%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleArrivee().getNom()%></td>
+            <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
+            <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().format(formatter)%></td>
+            <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getArriveeVol().format(formatter)%></td>
         </tr>
         <% } %>
         </tbody>

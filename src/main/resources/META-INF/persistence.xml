@@ -16,6 +16,8 @@
         <class>itu.nicolas.ticketing.models.OffreSiegeAvionVol</class>
         <class>itu.nicolas.ticketing.models.ConfigurationLimite</class>
         <class>itu.nicolas.ticketing.models.Reservation</class>
+        <class>itu.nicolas.ticketing.models.ReservationFille</class>
+        <class>itu.nicolas.ticketing.models.ConfigPrix</class>
         <class>itu.nicolas.ticketing.models.UserTicketing</class>
         <class>itu.nicolas.ticketing.models.Role</class>
         <class>itu.nicolas.ticketing.models.EtatOffre</class>
