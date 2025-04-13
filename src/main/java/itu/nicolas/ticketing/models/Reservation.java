@@ -59,7 +59,7 @@ public class Reservation {
 //    }
 
     public List<ReservationFille> getReservationFilles(EntityManager em) {
-        if (this.reservationFilles == null) {
+        if (this.reservationFilles == null || this.reservationFilles.isEmpty()) {
             Reservation reservation = new Reservation();
             ReservationFille rf = new ReservationFille();
             rf.setIdReservationMere(this);
@@ -71,14 +71,14 @@ public class Reservation {
     }
 
     public List<ReservationFille> getReservationFilles() {
-//        if (this.reservationFilles == null) {
+        if (this.reservationFilles == null || this.reservationFilles.isEmpty()) {
             EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
             Reservation reservation = new Reservation();
             ReservationFille rf = new ReservationFille();
             rf.setIdReservationMere(this);
 
             this.setReservationFilles(rf.findAllByIdMere(em));
-//        }
+        }
 
         return this.reservationFilles;
     }
@@ -135,7 +135,11 @@ public class Reservation {
     }
 
     public List<Reservation> findAll(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v", Reservation.class).getResultList();
+        List<Reservation> list = em.createQuery("SELECT v FROM Reservation v", Reservation.class).getResultList();
+        for (Reservation r : list)
+            r.getReservationFilles();
+
+        return list;
     }
 
     public List<Reservation> findAll() {
@@ -146,6 +150,7 @@ public class Reservation {
     public void findById(int id, EntityManager em) {
         try {
             Reservation res = em.find(Reservation.class, id);
+            res.getReservationFilles(em);
             this.adapt(res);
         } catch (Exception e) {
             return ;

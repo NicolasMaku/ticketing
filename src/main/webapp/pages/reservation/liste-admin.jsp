@@ -75,7 +75,7 @@
 
 <script>
     function telechargerPDF(id) {
-        fetch(`http://localhost:8080/api/reservation/pdf/13`)
+        fetch("http://localhost:8080/api/reservation/pdf/" + id)
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Erreur : " + response.status);
@@ -87,7 +87,7 @@
 
                 const a = document.createElement("a");
                 a.href = url;
-                a.download = `reservation-13.pdf`; // Nom du fichier
+                a.download = "reservation-" + id + ".pdf"; // Nom du fichier
                 document.body.appendChild(a);
                 a.click(); // Déclenche le téléchargement
                 a.remove();

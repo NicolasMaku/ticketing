@@ -78,9 +78,14 @@ public class UserTicketing {
     }
 
     public List<Reservation> findAllReservationEnCours(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idVol.departVol > CURRENT_TIMESTAMP", Reservation.class)
+        List<Reservation> list = em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idVol.departVol > CURRENT_TIMESTAMP", Reservation.class)
                 .setParameter(1, this.getId())
                 .getResultList();
+
+        for (Reservation r : list)
+            r.getReservationFilles(em);
+
+        return list;
     }
 
     public List<Reservation> findAllReservationFini() {
@@ -90,9 +95,14 @@ public class UserTicketing {
     }
 
     public List<Reservation> findAllReservationFini(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idVol.departVol < CURRENT_TIMESTAMP", Reservation.class)
+        List<Reservation> list = em.createQuery("SELECT v FROM Reservation v where v.idUserTicketing.id = ?1 and v.idVol.departVol < CURRENT_TIMESTAMP", Reservation.class)
                 .setParameter(1, this.getId())
                 .getResultList();
+
+        for (Reservation r : list)
+            r.getReservationFilles(em);
+
+        return list;
     }
 
     public UserTicketing() {
