@@ -36,7 +36,7 @@ public class Reservation {
     private byte[] image;
 
     @OneToMany(mappedBy = "idReservationMere")
-    private List<ReservationFille> reservationFilles = new ArrayList<>();
+    private List<ReservationFille> reservationFilles;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vol")
@@ -50,8 +50,37 @@ public class Reservation {
         this.idVol = idVol;
     }
 
+//    public List<ReservationFille> getReservationFilles() {
+//        return reservationFilles;
+//    }
+//
+//    public void setReservationFilles(List<ReservationFille> reservationFilles) {
+//        this.reservationFilles = reservationFilles;
+//    }
+
+    public List<ReservationFille> getReservationFilles(EntityManager em) {
+        if (this.reservationFilles == null) {
+            Reservation reservation = new Reservation();
+            ReservationFille rf = new ReservationFille();
+            rf.setIdReservationMere(this);
+
+            this.setReservationFilles(rf.findAllByIdMere(em));
+        }
+
+        return this.reservationFilles;
+    }
+
     public List<ReservationFille> getReservationFilles() {
-        return reservationFilles;
+//        if (this.reservationFilles == null) {
+            EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+            Reservation reservation = new Reservation();
+            ReservationFille rf = new ReservationFille();
+            rf.setIdReservationMere(this);
+
+            this.setReservationFilles(rf.findAllByIdMere(em));
+//        }
+
+        return this.reservationFilles;
     }
 
     public void setReservationFilles(List<ReservationFille> reservationFilles) {
@@ -107,6 +136,11 @@ public class Reservation {
 
     public List<Reservation> findAll(EntityManager em) {
         return em.createQuery("SELECT v FROM Reservation v", Reservation.class).getResultList();
+    }
+
+    public List<Reservation> findAll() {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        return findAll(em);
     }
 
     public void findById(int id, EntityManager em) {

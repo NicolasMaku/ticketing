@@ -60,6 +60,12 @@ public class ReservationFille {
         }
     }
 
+    public List<ReservationFille> findAllByIdMere(EntityManager em) {
+        return em.createQuery("SELECT v FROM ReservationFille v WHERE v.idReservationMere.id = :idMere", ReservationFille.class)
+                .setParameter("idMere", this.getIdReservationMere().getId())
+                .getResultList();
+    }
+
     public ConfigPrix getIdConfigPrix() {
         return idConfigPrix;
     }

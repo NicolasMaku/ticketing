@@ -2,6 +2,7 @@ package itu.nicolas.ticketing.controller;
 
 import itu.nicolas.ticketing.models.ConfigurationLimite;
 import itu.nicolas.ticketing.models.Reservation;
+import itu.nicolas.ticketing.models.ReservationFille;
 import itu.nicolas.ticketing.models.UserTicketing;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
@@ -29,7 +30,7 @@ public class ReservationAdminController {
 
         mg.itu.prom16.retourController.ModelView mv = new mg.itu.prom16.retourController.ModelView("/webapp/index.jsp");
         mv.addObject("page", "pages/reservation/liste-admin.jsp");
-        mv.addObject("reservations", reservation.findAll(em));
+        mv.addObject("reservations", reservation.findAll());
 
         if (erreur != null) mv.addObject("erreur", erreur);
         return mv;
@@ -50,7 +51,7 @@ public class ReservationAdminController {
         // voir si date d'annulation apres limite de heure
         ConfigurationLimite limAnnulation = new ConfigurationLimite();
         limAnnulation.findByLibelle("annulation", em);
-        LocalDateTime limiteAnnulation = res.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().minusHours(limAnnulation.getNbreHeure());
+        LocalDateTime limiteAnnulation = res.getReservationFilles(em).get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().minusHours(limAnnulation.getNbreHeure());
         if (limiteAnnulation.isBefore(LocalDateTime.now())) {
             String message = "Vous avez depassee l heure limite d annulation";
             System.out.println(message);

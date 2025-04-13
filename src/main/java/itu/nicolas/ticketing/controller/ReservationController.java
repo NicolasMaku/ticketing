@@ -195,7 +195,7 @@ public class ReservationController {
         // voir si date d'annulation apres limite de heure
         ConfigurationLimite limAnnulation = new ConfigurationLimite();
         limAnnulation.findByLibelle("annulation", em);
-        LocalDateTime limiteAnnulation = res.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().minusHours(limAnnulation.getNbreHeure());
+        LocalDateTime limiteAnnulation = res.getReservationFilles(em).get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().minusHours(limAnnulation.getNbreHeure());
         if (limiteAnnulation.isBefore(LocalDateTime.now())) {
             String message = "Vous avez depassee l heure limite d annulation";
             System.out.println(message);
