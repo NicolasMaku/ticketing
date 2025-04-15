@@ -10,6 +10,10 @@ import mg.itu.prom16.annotations.*;
 import mg.itu.prom16.retourController.ModelView;
 import util.CustomSession;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 
 @Authorization("admin")
@@ -61,6 +65,41 @@ public class ReservationAdminController {
         res.setDateAnnulation(LocalDateTime.now());
         res.update(em);
         return "redirect:/reservation/liste";
+    }
+
+    @Get
+    @Url("reservation/pdf")
+    public byte[] printPdf(
+            @Param(name= "idReservation") int idReservation,
+            CustomSession session
+    ) {
+        String apiUrl = "http://localhost:8080/api/reservation/pdf/" + idReservation;
+
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            if (conn.getResponseCode() == 200) {
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                try (InputStream in = conn.getInputStream()) {
+                    byte[] tmp = new byte[4096];
+                    int n;
+                    while ((n = in.read(tmp)) > -1) {
+                        buffer.write(tmp, 0, n);
+                    }
+                }
+
+                return buffer.toByteArray();
+
+            } else {
+                throw new RuntimeException("Erreur API: " + conn.getResponseCode());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erreur lors de l'appel à l'API PDF");
+        }
     }
 
 }

@@ -65,7 +65,14 @@
                 <% } %>
             </td>
             <td>
-                <button class="btn btn-primary btn-sm" type="button" onclick="telechargerPDF(<%=r.getId()%>)">Télécharger PDF</button>
+                <form action="/ticketing/reservation/pdf" method="get">
+                    <input type="hidden" name="idReservation" value="<%=r.getId()%>">
+                    <input type="hidden" name="idUser" value="1">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="bi bi-download"></i>Télécharger PDF
+                    </button>
+                </form>
+<%--                <button class="btn btn-primary btn-sm" type="button" onclick="telechargerPDF(<%=r.getId()%>)">Télécharger PDF</button>--%>
             </td>
         </tr>
         <% } %>
@@ -73,29 +80,29 @@
     </table>
 </div>
 
-<script>
-    function telechargerPDF(id) {
-        fetch("http://localhost:8080/api/reservation/pdf/" + id)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("Erreur : " + response.status);
-                }
-                return response.blob(); // On récupère le PDF en binaire
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
+<%--<script>--%>
+<%--    function telechargerPDF(id) {--%>
+<%--        fetch("http://localhost:8080/api/reservation/pdf/" + id)--%>
+<%--            .then(response => {--%>
+<%--                if (!response.ok) {--%>
+<%--                    throw new Error("Erreur : " + response.status);--%>
+<%--                }--%>
+<%--                return response.blob(); // On récupère le PDF en binaire--%>
+<%--            })--%>
+<%--            .then(blob => {--%>
+<%--                const url = window.URL.createObjectURL(blob);--%>
 
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = "reservation-" + id + ".pdf"; // Nom du fichier
-                document.body.appendChild(a);
-                a.click(); // Déclenche le téléchargement
-                a.remove();
-                window.URL.revokeObjectURL(url); // Libère la mémoire
-                alert("L'export est reussi");
-            })
-            .catch(error => {
-                alert("Impossible de télécharger le fichier : " + error.message);
-            });
-    }
-</script>
+<%--                const a = document.createElement("a");--%>
+<%--                a.href = url;--%>
+<%--                a.download = "reservation-" + id + ".pdf"; // Nom du fichier--%>
+<%--                document.body.appendChild(a);--%>
+<%--                a.click(); // Déclenche le téléchargement--%>
+<%--                a.remove();--%>
+<%--                window.URL.revokeObjectURL(url); // Libère la mémoire--%>
+<%--                alert("L'export est reussi");--%>
+<%--            })--%>
+<%--            .catch(error => {--%>
+<%--                alert("Impossible de télécharger le fichier : " + error.message);--%>
+<%--            });--%>
+<%--    }--%>
+<%--</script>--%>
