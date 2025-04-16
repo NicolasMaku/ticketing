@@ -41,6 +41,7 @@ public class ReservationAdminController {
     }
 
     @Post
+    @Anonymous
     @Url("reservation/annuler/admin")
     public String annuler(
             @Param(name = "id") int idReservation,
@@ -64,16 +65,17 @@ public class ReservationAdminController {
 
         res.setDateAnnulation(LocalDateTime.now());
         res.update(em);
-        return "redirect:/reservation/liste";
+        return "redirect:/reservation/liste-admin";
     }
 
     @Get
     @Url("reservation/pdf")
     public byte[] printPdf(
             @Param(name= "idReservation") int idReservation,
-            CustomSession session
+            CustomSession session,
+            @StaticValue("apiurl") String apiUrlPre
     ) {
-        String apiUrl = "http://localhost:8080/api/reservation/pdf/" + idReservation;
+        String apiUrl = apiUrlPre + "/api/reservation/pdf/" + idReservation;
 
         try {
             URL url = new URL(apiUrl);

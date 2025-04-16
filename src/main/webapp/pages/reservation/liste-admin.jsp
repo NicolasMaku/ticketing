@@ -24,7 +24,7 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Date res</th>
+            <th scope="col">Date reservation</th>
             <th scope="col">Nbr billets</th>
 <%--            <th scope="col">Classe</th>--%>
             <th scope="col">Trajet</th>
@@ -40,8 +40,8 @@
         <% for(Reservation r : reservations) { %>
         <tr class="">
             <th scope="row"><%=r.getId()%></th>
-            <th class=""><%=r.getDateReservation().format(formatter)%></th>
-            <th class=""><%=r.getReservationFilles().size()%></th>
+            <td ><%=r.getDateReservation().format(formatter)%></td>
+            <td ><%=r.getReservationFilles().size()%></td>
 <%--            <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdSiegeAvion().getIdTypeSiege().getLibelle()%></td>--%>
             <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleDepart().getNom()%> - <%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleArrivee().getNom()%></td>
             <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
@@ -69,7 +69,7 @@
                     <input type="hidden" name="idReservation" value="<%=r.getId()%>">
                     <input type="hidden" name="idUser" value="1">
                     <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="bi bi-download"></i>Télécharger PDF
+                        <i class="bi bi-download    "></i>Télécharger PDF
                     </button>
                 </form>
 <%--                <button class="btn btn-primary btn-sm" type="button" onclick="telechargerPDF(<%=r.getId()%>)">Télécharger PDF</button>--%>
