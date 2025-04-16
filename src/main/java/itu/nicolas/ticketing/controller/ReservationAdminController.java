@@ -41,7 +41,6 @@ public class ReservationAdminController {
     }
 
     @Post
-    @Anonymous
     @Url("reservation/annuler/admin")
     public String annuler(
             @Param(name = "id") int idReservation,
@@ -52,11 +51,13 @@ public class ReservationAdminController {
 
         Reservation res = new Reservation();
         res.findById(idReservation, em);
+        System.out.println("0000000000000000000000 : " + res.getIdVol().getId());
 
         // voir si date d'annulation apres limite de heure
         ConfigurationLimite limAnnulation = new ConfigurationLimite();
         limAnnulation.findByLibelle("annulation", em);
         LocalDateTime limiteAnnulation = res.getReservationFilles(em).get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().minusHours(limAnnulation.getNbreHeure());
+
         if (limiteAnnulation.isBefore(LocalDateTime.now())) {
             String message = "Vous avez depassee l heure limite d annulation";
             System.out.println(message);

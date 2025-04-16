@@ -49,7 +49,10 @@
             <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getArriveeVol().format(formatter)%></td>
             <td><% if (r.getImage() != null) { %>
                 <img style="height: 3rem" src="data:image/png;base64,<%=Base64.getEncoder().encodeToString(r.getImage())%>" alt="">
-            <% } %> </td>
+            <% } else {
+                out.print("Aucun");
+            } %>
+            </td>
             <td class="">
                 <% if (r.getDateAnnulation() == null) { %>
                     <form action="/ticketing/reservation/annuler/admin" method="post">

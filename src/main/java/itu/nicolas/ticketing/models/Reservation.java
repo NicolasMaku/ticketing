@@ -162,6 +162,8 @@ public class Reservation {
         this.idUserTicketing = res.getIdUserTicketing();
         this.dateReservation = res.getDateReservation();
         this.dateAnnulation = res.getDateAnnulation();
+        this.image = res.getImage();
+        this.idVol = res.getIdVol();
     }
 
     public void save(EntityManager em) {
