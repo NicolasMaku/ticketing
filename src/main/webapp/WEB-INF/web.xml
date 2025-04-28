@@ -18,9 +18,14 @@
             <param-name>authentification-handler</param-name>
             <param-value>itu.nicolas.ticketing.handler.CustomAuthenHandler</param-value>
         </init-param>
+
+        <init-param>
+            <param-name>apiurl</param-name>
+            <param-value>http://localhost:8080</param-value>
+        </init-param>
+
     </servlet>
 
-    <!-- Mapping des URLs pour le DispatcherServlet -->
     <servlet-mapping>
         <servlet-name>FrontController</servlet-name>
         <url-pattern>/</url-pattern>

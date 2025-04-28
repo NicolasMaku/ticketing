@@ -7,7 +7,10 @@ import util.MyFile;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "reservation")
@@ -27,28 +30,70 @@ public class Reservation {
     @JoinColumn(name = "id_user_ticketing", nullable = false)
     private UserTicketing idUserTicketing;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id_offre_siege_avion_vol", nullable = false)
-    private OffreSiegeAvionVol idOffreSiegeAvionVol;
-
-    @Column(name = "prix")
-    private Double prix;
-
     @Transient
     private MyFile file;
+    @Column(name = "image")
+    private byte[] image;
 
-    @Column(name = "passeport")
-    private byte[] passeport;
+    @OneToMany(mappedBy = "idReservationMere")
+    private List<ReservationFille> reservationFilles;
 
-    public byte[] getPasseport() {
-        return passeport;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_vol")
+    private Vol idVol;
+
+    public Vol getIdVol() {
+        return idVol;
     }
 
-    public void setPasseport(byte[] passeport) {
-        this.passeport = passeport;
+    public void setIdVol(Vol idVol) {
+        this.idVol = idVol;
     }
 
+//    public List<ReservationFille> getReservationFilles() {
+//        return reservationFilles;
+//    }
+//
+//    public void setReservationFilles(List<ReservationFille> reservationFilles) {
+//        this.reservationFilles = reservationFilles;
+//    }
 
+    public List<ReservationFille> getReservationFilles(EntityManager em) {
+        if (this.reservationFilles == null || this.reservationFilles.isEmpty()) {
+            Reservation reservation = new Reservation();
+            ReservationFille rf = new ReservationFille();
+            rf.setIdReservationMere(this);
+
+            this.setReservationFilles(rf.findAllByIdMere(em));
+        }
+
+        return this.reservationFilles;
+    }
+
+    public List<ReservationFille> getReservationFilles() {
+        if (this.reservationFilles == null || this.reservationFilles.isEmpty()) {
+            EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+            Reservation reservation = new Reservation();
+            ReservationFille rf = new ReservationFille();
+            rf.setIdReservationMere(this);
+
+            this.setReservationFilles(rf.findAllByIdMere(em));
+        }
+
+        return this.reservationFilles;
+    }
+
+    public void setReservationFilles(List<ReservationFille> reservationFilles) {
+        this.reservationFilles = reservationFilles;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
     public Integer getId() {
         return id;
     }
@@ -81,31 +126,31 @@ public class Reservation {
         this.idUserTicketing = idUserTicketing;
     }
 
-    public OffreSiegeAvionVol getIdOffreSiegeAvionVol() {
-        return idOffreSiegeAvionVol;
-    }
-
-    public void setIdOffreSiegeAvionVol(OffreSiegeAvionVol idOffreSiegeAvionVol) {
-        this.idOffreSiegeAvionVol = idOffreSiegeAvionVol;
-    }
-
     public Reservation() {
     }
 
-    public Reservation(LocalDateTime dateReservation, UserTicketing idUserTicketing, OffreSiegeAvionVol idOffreSiegeAvionVol, Double prix) {
+    public Reservation(LocalDateTime dateReservation, UserTicketing idUserTicketing) {
         this.dateReservation = dateReservation;
         this.idUserTicketing = idUserTicketing;
-        this.idOffreSiegeAvionVol = idOffreSiegeAvionVol;
-        this.prix = prix;
     }
 
     public List<Reservation> findAll(EntityManager em) {
-        return em.createQuery("SELECT v FROM Reservation v", Reservation.class).getResultList();
+        List<Reservation> list = em.createQuery("SELECT v FROM Reservation v", Reservation.class).getResultList();
+        for (Reservation r : list)
+            r.getReservationFilles();
+
+        return list;
+    }
+
+    public List<Reservation> findAll() {
+        EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
+        return findAll(em);
     }
 
     public void findById(int id, EntityManager em) {
         try {
             Reservation res = em.find(Reservation.class, id);
+            res.getReservationFilles(em);
             this.adapt(res);
         } catch (Exception e) {
             return ;
@@ -115,9 +160,10 @@ public class Reservation {
     public void adapt(Reservation res) {
         this.id = res.getId();
         this.idUserTicketing = res.getIdUserTicketing();
-        this.idOffreSiegeAvionVol = res.getIdOffreSiegeAvionVol();
         this.dateReservation = res.getDateReservation();
         this.dateAnnulation = res.getDateAnnulation();
+        this.image = res.getImage();
+        this.idVol = res.getIdVol();
     }
 
     public void save(EntityManager em) {

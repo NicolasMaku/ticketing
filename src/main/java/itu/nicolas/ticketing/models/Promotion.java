@@ -136,7 +136,6 @@ public class Promotion {
         EtatOffre etatOffre = offre.getEtatOffre(em);
 
         if (etatOffre.getNombre() < getNombreSiege()) {
-            System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
             return this.getValeurPourcentage();
         }
 

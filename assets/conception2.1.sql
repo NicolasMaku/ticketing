@@ -53,12 +53,20 @@ CREATE TABLE siege_avion(
    FOREIGN KEY(id_avion) REFERENCES avion(id_avion)
 );
 
+CREATE TABLE config_prix(
+   id_config_prix SERIAL,
+   libelle VARCHAR(50) ,
+   reduction NUMERIC(15,2)  ,
+   PRIMARY KEY(id_config_prix)
+);
+
 CREATE TABLE user_ticketing(
-   id_user_client SERIAL,
+   id_user_ticketing SERIAL,
    username VARCHAR(50) ,
+   email VARCHAR(50) ,
    password VARCHAR(50) ,
    id_role INTEGER NOT NULL,
-   PRIMARY KEY(id_user_client),
+   PRIMARY KEY(id_user_ticketing),
    FOREIGN KEY(id_role) REFERENCES role(id_role)
 );
 
@@ -69,32 +77,41 @@ CREATE TABLE offre_siege_avion_vol(
    id_vol INTEGER NOT NULL,
    PRIMARY KEY(id_offre_siege_avion_vol),
    FOREIGN KEY(id_siege_avion) REFERENCES siege_avion(id_siege_avion),
-   FOREIGN KEY(id_vol) REFERENCES vol(id_vol) on delete cascade
+   FOREIGN KEY(id_vol) REFERENCES vol(id_vol)
 );
+
+CREATE TABLE Reservation(
+    id_reservation SERIAL,
+    date_reservation TIMESTAMP,
+    date_annulation TIMESTAMP,
+    image BYTEA,
+    id_vol INTEGER NOT NULL,
+    id_user_ticketing INTEGER NOT NULL,
+    PRIMARY KEY(id_reservation),
+    FOREIGN KEY(id_vol) REFERENCES vol(id_vol),
+    FOREIGN KEY(id_user_ticketing) REFERENCES user_ticketing(id_user_ticketing)
+);
+
+
+CREATE TABLE reservation_fille(
+      id_reservation_fille SERIAL,
+      id_categorie INTEGER,
+      prix NUMERIC(15,2)  ,
+      image VARCHAR(50) ,
+      id_offre_siege_avion_vol INTEGER NOT NULL,
+      id_reservation_mere INTEGER NOT NULL,
+      PRIMARY KEY(id_reservation_fille),
+      FOREIGN KEY(id_offre_siege_avion_vol) REFERENCES offre_siege_avion_vol(id_offre_siege_avion_vol),
+      FOREIGN KEY(id_reservation_mere) REFERENCES Reservation(id_reservation)
+);
+
 
 CREATE TABLE promotion(
    id_promotion SERIAL,
    valeur_pourcentage NUMERIC(15,2)  ,
-   nombre_siege VARCHAR(50) ,
+   nombre_siege INTEGER,
    id_offre_siege_avion_vol INTEGER NOT NULL,
    PRIMARY KEY(id_promotion),
    UNIQUE(id_offre_siege_avion_vol),
    FOREIGN KEY(id_offre_siege_avion_vol) REFERENCES offre_siege_avion_vol(id_offre_siege_avion_vol)
-);
-
-CREATE TABLE reservation(
-   id_user_client INTEGER,
-   id_offre_siege_avion_vol INTEGER,
-   date_reservation TIMESTAMP,
-   date_annulation TIMESTAMP,
-   PRIMARY KEY(id_user_client, id_offre_siege_avion_vol),
-   FOREIGN KEY(id_user_client) REFERENCES user_ticketing(id_user_client),
-   FOREIGN KEY(id_offre_siege_avion_vol) REFERENCES offre_siege_avion_vol(id_offre_siege_avion_vol)
-);
-
-CREATE TABLE config_prix(
-    id_config_prix SERIAL,
-    libelle VARCHAR(50) ,
-    reduction NUMERIC(15,2)  ,
-    PRIMARY KEY(id_config_prix)
 );

@@ -13,20 +13,43 @@
     <h3>Reservation</h3>
     <p>Choisissez votre classe</p>
     <input type="hidden" name="idVol" value="<%=request.getParameter("id")%>">
+    <table>
+        <tr>
+            <th>Sélection</th>
+            <th>Type de billet</th>
+            <th>Prix</th>
+            <th>Restant</th>
+            <th>Quantité adulte</th>
+            <th>Quantité enfant</th>
+        </tr>
     <% for(OffreSiegeAvionVol o : offresSiege) { %>
-        <div class="mb-3 row">
-<%--            <label for="staticEmail" class="col-sm-2 col-form-label">Choisisez votre classe</label>--%>
-            <div class="input-group mb-3">
-                <%
-                    EtatOffre etatOffre = o.getEtatOffre(em);
-                    int soustraire = 0;
-                    if (etatOffre != null) soustraire = etatOffre.getNombre();
-                %>
-                <input class="mt-0 mx-3 p-3" type="radio" name="idOffre" aria-label="Checkbox for following text input" value="<%=o.getId()%>">
-                <div><%=o.getIdSiegeAvion().getIdTypeSiege().getLibelle() + " : " + o.getPrix() %>$ ; restant: <%=o.getIdSiegeAvion().getNombre() - soustraire%> </div>
-            </div>
-        </div>
+
+            <tr>
+                <td>
+                    <input type="checkbox" name="idOffres[]" value="<%= o.getId() %>" onchange="toggleQuantityInput(this)">
+                </td>
+                <td>
+                    <%
+                        EtatOffre etatOffre = o.getEtatOffre(em);
+                        int soustraire = 0;
+                        if (etatOffre != null) soustraire = etatOffre.getNombre();
+                    %>
+                    <%=o.getIdSiegeAvion().getIdTypeSiege().getLibelle() %>
+                </td>
+                <td><%= o.getPrix() %> $</td>
+                <td><%=o.getIdSiegeAvion().getNombre() - soustraire%></td>
+                <td>
+                    <input type="number" name="quantites[]" min="0" max="10" value="1" disabled>
+                </td>
+                <td>
+                    <input type="number" name="quantitesEnfants[]" min="0" max="10" value="0" disabled>
+                </td>
+            </tr>
+
     <% } %>
+    </table>
+
+
 <%--    <%=vol.getId()%>--%>
 <%--    <%=offresSiege.isEmpty()%>--%>
 <%--    <%=offresSiege.size()%>--%>
@@ -39,4 +62,12 @@
     </div>
 
 </form>
+<script>
+    function toggleQuantityInput(checkbox) {
+        const inputs = checkbox.closest('tr').querySelectorAll('input[type="number"]');
+        inputs.forEach((input) => {
+            input.disabled = !checkbox.checked;
+        })
+    }
+</script>
 

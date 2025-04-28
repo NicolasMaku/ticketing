@@ -23,6 +23,9 @@
     <div class="collapse d-flex" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
+          <a class="nav-link" href="/ticketing/reservation/liste-admin">Réservations</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/ticketing/configurations/form">Configurations</a>
         </li>
         <li class="nav-item dropdown">
@@ -66,4 +69,5 @@
       button.setAttribute("aria-expanded", "false");
     }
   }
+
 </script>
