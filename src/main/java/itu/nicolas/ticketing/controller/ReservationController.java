@@ -2,9 +2,11 @@ package itu.nicolas.ticketing.controller;
 
 import itu.nicolas.ticketing.models.*;
 import itu.nicolas.ticketing.repository.*;
+import itu.nicolas.ticketing.utils.CsvUtil;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import mg.itu.prom16.annotations.*;
+import mg.itu.prom16.retourController.ExportableFile;
 import mg.itu.prom16.retourController.ModelView;
 import util.CustomSession;
 import util.MyFile;
@@ -31,6 +33,22 @@ public class ReservationController {
         mv.addObject("page", "pages/reservation/choixPlaces.jsp");
         mv.addObject("offres", offresRepo.findByVol(vr.findById(idVol)));
         return mv;
+    }
+
+    @Get
+    @Url("reservation/export-csv")
+    public ExportableFile exportCsv() {
+        ExportableFile csv = new ExportableFile("reservation.csv", "text/csv");
+        Avion av = new Avion();
+        List<Avion> avions = av.findAll(em);
+
+        for (Avion a : avions)
+            System.out.println(a.getLibelle());
+
+        csv.setContent(CsvUtil.exportToCsvBytes(avions, Avion.class));
+
+        return csv;
+
     }
 
     @Post
