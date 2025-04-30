@@ -35,22 +35,6 @@ public class ReservationController {
         return mv;
     }
 
-    @Get
-    @Url("reservation/export-csv")
-    public ExportableFile exportCsv() {
-        ExportableFile csv = new ExportableFile("reservation.csv", "text/csv");
-        Avion av = new Avion();
-        List<Avion> avions = av.findAll(em);
-
-        for (Avion a : avions)
-            System.out.println(a.getLibelle());
-
-        csv.setContent(CsvUtil.exportToCsvBytes(avions, Avion.class));
-
-        return csv;
-
-    }
-
     @Post
     @Url("reservation/traitement")
     public String traitement(

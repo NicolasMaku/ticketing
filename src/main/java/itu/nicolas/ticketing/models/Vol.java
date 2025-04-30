@@ -1,5 +1,8 @@
 package itu.nicolas.ticketing.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -18,31 +21,54 @@ public class Vol {
     private Integer id;
 
     @Column(name = "depart_vol")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime departVol;
 
     @Column(name = "arrivee_vol")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime arriveeVol;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ville_depart", nullable = false)
     private Ville idVilleDepart;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ville_arrivee", nullable = false)
     private Ville idVilleArrivee;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_avion", nullable = false)
     private Avion idAvion;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idVol", cascade = CascadeType.REMOVE)
     private List<OffreSiegeAvionVol> offreSiegeAvionVols = new ArrayList<>();
 
     @Transient
+    @JsonIgnore
     private String departVolString;
 
     @Transient
+    @JsonIgnore
     private String arriveeVolString;
+
+    @JsonProperty("villeDepart")
+    public String getVilleDepartNom() {
+        return idVilleDepart != null ? idVilleDepart.getNom() : "";
+    }
+
+    @JsonProperty("villeArrivee")
+    public String getVilleArriveeNom() {
+        return idVilleArrivee != null ? idVilleArrivee.getNom() : "";
+    }
+
+    @JsonProperty("Avion")
+    public String getAvionNom() {
+        return idAvion != null ? idAvion.getLibelle() : "";
+    }
 
     public List<OffreSiegeAvionVol> getOffreSiegeAvionVols() {
         return offreSiegeAvionVols;
@@ -139,5 +165,9 @@ public class Vol {
         Vol v = em.find(Vol.class, idVol);
 
         if(v != null) this.adapt(v);
+    }
+
+    public List<Vol> findAll(EntityManager em) {
+        return em.createQuery("SELECT v FROM Vol v", Vol.class).getResultList();
     }
 }
