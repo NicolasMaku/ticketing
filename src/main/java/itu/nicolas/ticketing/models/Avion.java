@@ -1,5 +1,7 @@
 package itu.nicolas.ticketing.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -20,8 +22,10 @@ public class Avion {
     private String libelle;
 
     @Column(name = "date_fabrication")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate dateFabrication;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "idAvion")
     private List<SiegeAvion> siegeAvions = new ArrayList<>();
 
@@ -58,4 +62,10 @@ public class Avion {
     }
 
     //TODO [JPA Buddy] generate columns from DB
+
+    public List<Avion> findAll(EntityManager em) {
+        List<Avion> list = em.createQuery("SELECT v FROM Avion v", Avion.class).getResultList();
+        return list;
+    }
+
 }

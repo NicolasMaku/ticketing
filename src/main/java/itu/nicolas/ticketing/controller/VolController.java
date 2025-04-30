@@ -3,9 +3,11 @@ package itu.nicolas.ticketing.controller;
 
 import itu.nicolas.ticketing.models.*;
 import itu.nicolas.ticketing.repository.*;
+import itu.nicolas.ticketing.utils.CsvUtil;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import mg.itu.prom16.annotations.Role;
+import mg.itu.prom16.retourController.ExportableFile;
 import mg.itu.prom16.retourController.ModelView;
 import mg.itu.prom16.annotations.*;
 import util.CustomSession;
@@ -360,6 +362,19 @@ public class VolController {
         mv.addObject("villes",vr.findAll());
         mv.addObject("vol", volRepo.findById(idVol));
         return mv;
+    }
+
+
+    @Get
+    @Url("vol/export-csv")
+    public ExportableFile exportCsv() {
+        ExportableFile csv = new ExportableFile("vols.csv", "text/csv");
+
+        Vol vl = new Vol();
+        List<Vol> vols = vl.findAll(em);
+
+        csv.setContent(CsvUtil.exportToCsvBytes(vols, Vol.class));
+        return csv;
     }
 
 }

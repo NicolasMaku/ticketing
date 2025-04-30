@@ -31,4 +31,5 @@ C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\UserTicketingRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\VilleRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\VolRepository.java
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\utils\CsvUtil.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\utils\JPAUtil.java

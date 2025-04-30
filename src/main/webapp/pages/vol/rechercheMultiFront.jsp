@@ -20,7 +20,12 @@
     </div>
 <% } %>
 <form class="row g-3 needs-validation" novalidate method="post" action="/ticketing/vol/traite-multi">
-    <h3>Liste des vols</h3>
+    <div>
+        <h3>Liste des vols</h3>
+        <a href="/ticketing/vol/export-csv" class="btn btn-outline-success">
+            <i class="bi bi-file-earmark-spreadsheet"></i> Export en CSV
+        </a>
+    </div>
     <input type="hidden" name="idVol" value="<%= (vol != null) ? vol.getId() : -1 %>">
     <div class="col-md-4">
         <label for="validationCustom00" class="form-label">Avion</label>
