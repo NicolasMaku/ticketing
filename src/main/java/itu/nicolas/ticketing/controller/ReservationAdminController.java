@@ -7,6 +7,7 @@ import itu.nicolas.ticketing.models.UserTicketing;
 import itu.nicolas.ticketing.utils.JPAUtil;
 import jakarta.persistence.EntityManager;
 import mg.itu.prom16.annotations.*;
+import mg.itu.prom16.retourController.ExportableFile;
 import mg.itu.prom16.retourController.ModelView;
 import util.CustomSession;
 
@@ -71,7 +72,7 @@ public class ReservationAdminController {
 
     @Get
     @Url("reservation/pdf")
-    public byte[] printPdf(
+    public ExportableFile printPdf(
             @Param(name= "idReservation") int idReservation,
             CustomSession session,
             @StaticValue("apiurl") String apiUrlPre
@@ -93,7 +94,10 @@ public class ReservationAdminController {
                     }
                 }
 
-                return buffer.toByteArray();
+                String filename = "reservation_" + idReservation + ".pdf";
+                ExportableFile pdf = new ExportableFile(filename, "application/pdf");
+                pdf.setContent(buffer.toByteArray());
+                return pdf;
 
             } else {
                 throw new RuntimeException("Erreur API: " + conn.getResponseCode());
