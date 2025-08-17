@@ -3,6 +3,7 @@ C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\controller\HomeController.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\controller\ReservationAdminController.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\controller\ReservationController.java
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\controller\ReservationDetailsController.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\controller\UserController.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\controller\VolController.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\handler\CustomAuthenHandler.java
@@ -27,6 +28,7 @@ C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\EtatOffreRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\GenericRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\OffreSiegeAvionVolRepository.java
+C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\ReservationRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\SiegeAvionRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\UserTicketingRepository.java
 C:\Users\nicol\Documents\0-ITU\S5\ticketing\src\main\java\itu\nicolas\ticketing\repository\VilleRepository.java

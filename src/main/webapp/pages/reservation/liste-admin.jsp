@@ -39,7 +39,7 @@
         <tbody>
         <% for(Reservation r : reservations) { %>
         <tr class="">
-            <th scope="row"><%=r.getId()%></th>
+            <th scope="row"><a href="/ticketing/reservation-details-back?idReservation=<%=r.getId()%>"><%=r.getId()%></a></th>
             <td ><%=r.getDateReservation().format(formatter)%></td>
             <td ><%=r.getReservationFilles().size()%></td>
 <%--            <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdSiegeAvion().getIdTypeSiege().getLibelle()%></td>--%>

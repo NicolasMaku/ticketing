@@ -39,7 +39,7 @@
             <th scope="row"><%=r.getId()%></th>
             <td><%=r.getIdOffreSiegeAvionVol().getIdSiegeAvion().getIdTypeSiege().getLibelle()%></td>
             <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdVilleDepart().getNom()%> - <%=r.getIdOffreSiegeAvionVol().getIdVol().getIdVilleArrivee().getNom()%></td>
-            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
+            <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td   >
             <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getDepartVol().format(formatter)%></td>
             <td><%=r.getIdOffreSiegeAvionVol().getIdVol().getArriveeVol().format(formatter)%></td>
             <td><% if (r.getPasseport() != null) { %>

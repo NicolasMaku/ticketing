@@ -78,7 +78,7 @@ public class ReservationAdminController {
             @StaticValue("apiurl") String apiUrlPre
     ) {
         String apiUrl = apiUrlPre + "/api/reservation/pdf/" + idReservation;
-
+        System.out.println(idReservation);
         try {
             URL url = new URL(apiUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

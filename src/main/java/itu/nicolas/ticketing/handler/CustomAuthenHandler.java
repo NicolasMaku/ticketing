@@ -20,10 +20,7 @@ public class CustomAuthenHandler implements RoleHandler {
     @Override
     public String getRole(HttpServletRequest req) {
         try {
-            System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa");
             UserTicketing user = (UserTicketing) req.getSession().getAttribute("user");
-            if (user == null) System.out.println("NNNNNNNNNNNNNUUUUUUUUUUUUUUUULLLLLLLLLLLLLLLLLLLLLL");
-            else System.out.println("NNNNNNNNNNNNNNNNNNNNOOOOOOOOOOOOOOOOOOOOOO");
             return user.getIdRole().getLibelle();
         } catch (Exception e) {
             e.printStackTrace();

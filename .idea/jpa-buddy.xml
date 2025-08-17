@@ -3,7 +3,7 @@
   <component name="JpaBuddyIdeaProjectConfig">
     <option name="defaultUnitInitialized" value="true" />
     <option name="renamerInitialized" value="true" />
-    <option name="reverseEngineeringLastDbConnectionId" value="520b0ee3-a65b-4149-ae02-0bed5e275c07" />
+    <option name="reverseEngineeringLastDbConnectionId" value="520b0ee3-a65b-4149-ae02-0bed5e275c07__ticketing_public" />
     <option name="reLastEntityCreationPackage" value="src/main/java/itu/nicolas/ticketing/models" />
   </component>
 </project>

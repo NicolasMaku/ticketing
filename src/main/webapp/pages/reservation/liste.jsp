@@ -37,7 +37,7 @@
             if (!r.getReservationFilles().isEmpty()) { %>
 
             <tr class="">
-                <th scope="row"><%=r.getId()%></th>
+                <th scope="row"><a href="/ticketing/reservation-details?idReservation=<%=r.getId()%>"><%=r.getId()%></a></th>
                 <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleDepart().getNom()%> - <%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdVilleArrivee().getNom()%></td>
                 <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getIdAvion().getLibelle()%></td>
                 <td><%=r.getReservationFilles().get(0).getIdOffreSiegeAvionVol().getIdVol().getDepartVol().format(formatter)%></td>

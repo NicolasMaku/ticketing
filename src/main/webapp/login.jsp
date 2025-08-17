@@ -35,12 +35,12 @@
   <form action="/ticketing/login/traitement" method="post">
     <div class="mb-3">
       <label for="email" class="form-label">Email</label>
-      <input type="email" id="email" name="user.email" class="form-control">
+      <input type="email" id="email" name="user.email" class="form-control" value="jeff@gmail.com">
     </div>
 
     <div class="mb-3">
       <label for="password" class="form-label">Mot de passe</label>
-      <input type="password" id="password" name="user.password" class="form-control">
+      <input type="password" id="password" name="user.password" class="form-control" value="root">
     </div>
 
     <button type="submit" class="btn btn-primary w-100">Se connecter</button>
